@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/creditcard_module/pom.xml" />
         <option value="$PROJECT_DIR$/account_module/pom.xml" />
         <option value="$PROJECT_DIR$/commons_module/pom.xml" />
+        <option value="$PROJECT_DIR$/transaction_module/pom.xml" />
+        <option value="$PROJECT_DIR$/external_payment_module/pom.xml" />
       </list>
     </option>
   </component>
