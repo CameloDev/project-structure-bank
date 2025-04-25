@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="commons_module" />
-        <module name="creditcard_module" />
+        <module name="transaction_module" />
         <module name="account_module" />
+        <module name="external_payment_module" />
+        <module name="creditcard_module" />
       </profile>
     </annotationProcessing>
   </component>
@@ -17,6 +19,8 @@
       <module name="account_module" options="-parameters" />
       <module name="commons_module" options="-parameters" />
       <module name="creditcard_module" options="-parameters" />
+      <module name="external_payment_module" options="-parameters" />
+      <module name="transaction_module" options="-parameters" />
     </option>
   </component>
 </project>
