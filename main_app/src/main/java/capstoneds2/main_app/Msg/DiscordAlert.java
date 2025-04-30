@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 
 @Service
 public class DiscordAlert {
-    private final String webhookUrl ="https://discord.com/api/webhooks/1364756986691981312/qo80Oz-RDL8AU1xuzE1wbfaOmma3fqjDRXmUCIEKbj7ov_hjI4uBKCOacgxDJ5A4GDKn";
+    private final String webhookUrl ="WEBHOOK_URL"; // DEIXAR ASSIM POR ENQUANTO, ERA APENAS TESTE
     Logger log = LoggerFactory.getLogger(getClass());
 
     public void AlertDiscord(String mensagem) {
