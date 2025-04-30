@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "fatura")
 public class Fatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -24,7 +24,7 @@ public class Cartao {
     /*
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Client client
+    private Account client
     // ONDE VAI PRECISAR DO MODULO ACCOUNT
      */
     private String numero;
