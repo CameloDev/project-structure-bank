@@ -35,9 +35,11 @@ public class Cartao {
     private Float limite_disponivel;
 
     @Column(name = "bandeira",nullable = false)
+    @Enumerated(EnumType.STRING)
     private BandeiraCartao bandeiraCartao;
 
     @Column(name = "status",nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatusCartao statusCartao;
 
     private Boolean aprovacao_automatica;

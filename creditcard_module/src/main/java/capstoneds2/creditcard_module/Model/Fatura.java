@@ -30,6 +30,7 @@ public class Fatura {
     private LocalDate data_fechamento;
 
     @Column(name = "status",nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatusFatura statusFatura;
 
 }
