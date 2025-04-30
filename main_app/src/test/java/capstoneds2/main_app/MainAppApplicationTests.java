@@ -1,12 +1,10 @@
-package capstoneds2.account_module;
+package capstoneds2.main_app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("test")
-class AccountModuleApplicationTests {
+class MainAppApplicationTests {
 
     @Test
     void contextLoads() {
