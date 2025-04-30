@@ -1,43 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- Referência ao POM pai do seu projeto (não ao Spring Boot) -->
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>capstoneds2</groupId>
+        <artifactId>ds2</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <groupId>CapstoneDS2</groupId>
+
     <artifactId>external_payment_module</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>external_payment_module</name>
-    <description>external_payment_module</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
-    <properties>
-        <java.version>21</java.version>
-    </properties>
+    <name>External Payment Module</name>
+    <description>Módulo para integração com sistemas de pagamento externos</description>
+
     <dependencies>
+        <!-- Spring Boot básico -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- Spring WebClient para chamadas HTTP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <!-- Dependência do módulo commons -->
+        <dependency>
+            <groupId>capstoneds2</groupId>
+            <artifactId>commons_module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Dependência do transaction_module -->
+        <dependency>
+            <groupId>capstoneds2</groupId>
+            <artifactId>transaction_module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Lombok para reduzir boilerplate -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Testes -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -50,5 +71,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
