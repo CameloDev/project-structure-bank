@@ -27,8 +27,12 @@ public class Cartao {
     private Account client
     // ONDE VAI PRECISAR DO MODULO ACCOUNT
      */
+    @Column(unique = true, nullable = false)
     private String numero;
+
+    @Column(unique = true, nullable = false)
     private String nome_impresso;
+
     private String cvv;
     private LocalDate data_validade;
     private Float limite_total;
