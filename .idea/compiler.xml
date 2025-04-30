@@ -11,16 +11,17 @@
         <module name="account_module" />
         <module name="external_payment_module" />
         <module name="creditcard_module" />
+        <module name="main_app" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="account_module" options="-parameters" />
-      <module name="commons_module" options="-parameters" />
-      <module name="creditcard_module" options="-parameters" />
-      <module name="external_payment_module" options="-parameters" />
-      <module name="transaction_module" options="-parameters" />
+      <module name="account_module" options="" />
+      <module name="commons_module" options="" />
+      <module name="creditcard_module" options="" />
+      <module name="external_payment_module" options="" />
+      <module name="transaction_module" options="" />
     </option>
   </component>
 </project>
