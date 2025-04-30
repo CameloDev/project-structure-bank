@@ -25,10 +25,10 @@ public class HistoricoCartao {
     private Cartao cartao;
 
     @Column(name = "acao",nullable = false)
+    @Enumerated(EnumType.STRING)
     private AcaoHistorico acao;
 
     private String detalhes;
-
     private LocalDate data_alteracao;
 
 }
