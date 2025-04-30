@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/commons_module/pom.xml" />
         <option value="$PROJECT_DIR$/transaction_module/pom.xml" />
         <option value="$PROJECT_DIR$/external_payment_module/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
