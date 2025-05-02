@@ -1,0 +1,6 @@
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="capstoneds2.creditcard_module.View.Controller.HelloWorldController">
+    <Label text="Hello, World!" />
+</StackPane>

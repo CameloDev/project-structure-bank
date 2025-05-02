@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class HistoricoCartao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long historico_id;
+    private Integer historico_id;
 
     @ManyToOne
     @JoinColumn(name = "cartao_id", nullable = false)

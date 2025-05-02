@@ -15,9 +15,6 @@
         <module name="main_app" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ds2" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

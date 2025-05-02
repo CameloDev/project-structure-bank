@@ -15,11 +15,11 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="cartao")
+@Entity
 public class Cartao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartao_id;
+    private Integer cartao_id;
 
     /*
     @ManyToOne

@@ -23,6 +23,7 @@
 
     <dependencies>
 
+        <!-- Módulos internos -->
         <dependency>
             <groupId>capstoneds2</groupId>
             <artifactId>account_module</artifactId>
@@ -49,32 +50,39 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Starter básico do Spring Boot, sem servidor web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
+
+        <!-- Dependência para Spring Boot Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!-- Dependência para Spring Boot Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-
+        <!-- H2 para banco de dados em memória -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Lombok para simplificar a codificação -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
+        <!-- Dependência para testes -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -86,6 +94,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- Dependência para Reactor para testes -->
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
@@ -95,6 +105,7 @@
 
     <build>
         <plugins>
+            <!-- Plugin do compilador Maven -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -106,21 +117,15 @@
                 </configuration>
             </plugin>
 
+            <!-- Plugin Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>capstoneds2.main_app.MainAppApplication</mainClass>
-                    <classifier>exec</classifier>
+                    <mainClass>capstoneds2.main_app.MainAppApplication</mainClass> <!-- Classe principal do Spring Boot -->
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

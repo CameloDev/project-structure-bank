@@ -1,0 +1,33 @@
+.sidebar {
+    -fx-background-color: #1e2d56;
+    -fx-padding: 20;
+}
+
+.logo {
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+
+.header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: lightgray;
+    -fx-alignment: center-left;
+}
+
+.welcome {
+    -fx-font-size: 16;
+    -fx-text-fill: #333;
+}
+
+.sectionTitle {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e2d56;
+}
+
+.card {
+    -fx-background-color: linear-gradient(to right, #0045a0, #00a4e4);
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 2);
+}

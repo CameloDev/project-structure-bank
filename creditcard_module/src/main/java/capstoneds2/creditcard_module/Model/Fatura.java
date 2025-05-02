@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "fatura")
+@Entity
 public class Fatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fatura_id;
+    private Integer fatura_id;
 
     @ManyToOne
     @JoinColumn(name = "cartao_id", nullable = false)

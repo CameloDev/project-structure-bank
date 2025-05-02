@@ -1,7 +1,10 @@
 package capstoneds2.main_app;
 
+import capstoneds2.creditcard_module.CreditCardJavaFxApp;
+import javafx.application.Application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
@@ -16,7 +19,15 @@ import org.springframework.context.annotation.ComponentScan;
 public class MainAppApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MainAppApplication.class, args);
-    }
+        ConfigurableApplicationContext context = SpringApplication.run(MainAppApplication.class, args);
 
+        String activeModule = context.getEnvironment().getProperty("app.module.active", "none");
+
+        if ("creditcard".equals(activeModule)) {
+            // (Opcional) Setar contexto pai, se quiser reutilizar beans no módulo JavaFX
+            CreditCardJavaFxApp.setParentContext(context);
+
+            Application.launch(CreditCardJavaFxApp.class, args);
+        }
+    }
 }
