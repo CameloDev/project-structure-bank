@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class HistoricoCartao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer historico_id;
+    private Long historico_id;
 
     @ManyToOne
     @JoinColumn(name = "cartao_id", nullable = false)
@@ -29,7 +29,8 @@ public class HistoricoCartao {
     private AcaoHistorico acao;
 
     private String detalhes;
-    private LocalDate data_alteracao;
+    @Column(name = "data_alteracao")
+    private LocalDate alteracao;
 
 }
 

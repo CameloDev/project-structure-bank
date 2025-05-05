@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Cartao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cartao_id;
+    private Long cartao_id;
 
     /*
     @ManyToOne
@@ -56,5 +56,22 @@ public class Cartao {
      a verificação e etc, o entity é uma lista basica de manter que os dados estao sendo enviados certos
      e antes de mandar para o banco de dados que seria a função final, ele verifica se aquilo funciona nele
   */
+
+    /*
+    Construtor para Atualizar o cartao
+     */
+    public void atualizarCartao(Cartao novosDados) {
+        this.nome_impresso = novosDados.getNome_impresso();
+        this.numero = novosDados.getNumero();
+        this.cvv = novosDados.getCvv();
+        this.data_validade = novosDados.getData_validade();
+        this.limite_total = novosDados.getLimite_total();
+        this.limite_disponivel = novosDados.getLimite_disponivel();
+        this.bandeiraCartao = novosDados.getBandeiraCartao();
+        this.statusCartao = novosDados.getStatusCartao();
+        this.aprovacao_automatica = novosDados.getAprovacao_automatica();
+        this.eh_adicional = novosDados.getEh_adicional();
+        this.data_emissao = novosDados.getData_emissao();
+    }
 
 }
