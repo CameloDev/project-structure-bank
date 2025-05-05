@@ -17,9 +17,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 public class Cartao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartao_id;
+    @Column(name = "cartao_id")
+    private Long id;
 
     /*
     @ManyToOne
