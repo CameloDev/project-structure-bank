@@ -120,7 +120,7 @@ public class CartaoService {
     }
 
     public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
-        return historicoCartaoRepository.findByCartaoCartao_id(cartaoId);
+        return historicoCartaoRepository.findByCartaoId(cartaoId);
     }
 
 }
