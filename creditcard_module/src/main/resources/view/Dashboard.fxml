@@ -1,6 +1,19 @@
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="capstoneds2.creditcard_module.View.Controller.HelloWorldController">
-    <Label text="Hello, World!" />
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="capstoneds2.creditcard_module.View.Controller.HelloWorldController">
+   <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <center>
+          <Label text="Hello, World!" BorderPane.alignment="CENTER" />
+      </center>
+      <bottom>
+         <ButtonBar opacity="0.77" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <buttons>
+             <Button contentDisplay="BOTTOM" mnemonicParsing="false" text="Teste" textAlignment="CENTER" textFill="#111111" />
+            </buttons>
+         </ButtonBar>
+      </bottom>
+   </BorderPane>
 </StackPane>
