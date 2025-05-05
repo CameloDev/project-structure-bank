@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class Fatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer fatura_id;
+    private Long fatura_id;
 
     @ManyToOne
     @JoinColumn(name = "cartao_id", nullable = false)
