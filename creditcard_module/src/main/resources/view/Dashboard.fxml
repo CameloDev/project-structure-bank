@@ -11,7 +11,7 @@
       <bottom>
          <ButtonBar opacity="0.77" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <buttons>
-             <Button contentDisplay="BOTTOM" mnemonicParsing="false" text="Teste" textAlignment="CENTER" textFill="#111111" />
+             <Button fx:id="botaoTests" contentDisplay="BOTTOM" mnemonicParsing="false" text="Teste" textAlignment="CENTER" textFill="#111111" />
             </buttons>
          </ButtonBar>
       </bottom>

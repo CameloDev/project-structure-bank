@@ -7,8 +7,5 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(classes = AccountModuleApplication.class)
 class AccountModuleApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
 
 }

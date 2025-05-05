@@ -6,8 +6,5 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = CommonsModuleApplication.class)
 class CommonsModuleApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
 
 }
