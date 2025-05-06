@@ -37,7 +37,7 @@ public class CartaoService {
         cartao.setLimite_disponivel(5000f);
         cartao.setBandeiraCartao(cartaoRegister.bandeiraCartao());
         cartao.setStatusCartao(StatusCartao.ATIVO);
-        cartao.setAprovacao_automatica(cartaoRegister.aprovacao_automatica());
+        cartao.setAprovacaoAutomatica(cartaoRegister.aprovacao_automatica());
         cartao.setEh_adicional(cartaoRegister.eh_adicional());
 
         cartao.setNome_impresso("JOAO DA SILVA");
@@ -121,6 +121,24 @@ public class CartaoService {
 
     public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
         return historicoCartaoRepository.findByCartaoId(cartaoId);
+    }
+    public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+
+        Boolean antigo = cartao.getAprovacaoAutomatica();
+        if (antigo == modoAutomatico) return;
+
+        cartao.setAprovacaoAutomatica(modoAutomatico);
+        cartaoRepository.save(cartao);
+
+        HistoricoCartao historico = new HistoricoCartao();
+        historico.setCartao(cartao);
+        historico.setAcao(AcaoHistorico.alteracao_modo_aprovacao);
+        historico.setDetalhes("Alterado de " + (antigo ? "AUTOMÁTICO" : "MANUAL") +
+                " para " + (modoAutomatico ? "AUTOMÁTICO" : "MANUAL"));
+        historico.setAlteracao(LocalDate.now());
+        historicoCartaoRepository.save(historico);
     }
 
 }

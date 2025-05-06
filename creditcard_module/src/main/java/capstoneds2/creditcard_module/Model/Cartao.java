@@ -48,7 +48,9 @@ public class Cartao {
     @Enumerated(EnumType.STRING)
     private StatusCartao statusCartao;
 
-    private Boolean aprovacao_automatica;
+    @Column(name = "aprovacao_automatica")
+    private Boolean aprovacaoAutomatica = true;
+
     private Boolean eh_adicional;
     private LocalDate data_emissao;
 
@@ -71,7 +73,7 @@ public class Cartao {
         this.limite_disponivel = novosDados.getLimite_disponivel();
         this.bandeiraCartao = novosDados.getBandeiraCartao();
         this.statusCartao = novosDados.getStatusCartao();
-        this.aprovacao_automatica = novosDados.getAprovacao_automatica();
+        this.aprovacaoAutomatica = novosDados.getAprovacaoAutomatica();
         this.eh_adicional = novosDados.getEh_adicional();
         this.data_emissao = novosDados.getData_emissao();
     }
