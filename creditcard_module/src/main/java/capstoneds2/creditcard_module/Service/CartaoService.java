@@ -126,13 +126,12 @@ public class CartaoService {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
 
-        boolean antigo = cartao.isAprovacaoAutomatica();
-        if (antigo == modoAutomatico) return; // nada mudou
+        Boolean antigo = cartao.getAprovacaoAutomatica();
+        if (antigo == modoAutomatico) return;
 
         cartao.setAprovacaoAutomatica(modoAutomatico);
         cartaoRepository.save(cartao);
 
-        // Registra no histórico
         HistoricoCartao historico = new HistoricoCartao();
         historico.setCartao(cartao);
         historico.setAcao(AcaoHistorico.alteracao_modo_aprovacao);

@@ -49,9 +49,9 @@ public class Cartao {
     private StatusCartao statusCartao;
 
     @Column(name = "aprovacao_automatica")
-    private boolean aprovacaoAutomatica = true;
+    private Boolean aprovacaoAutomatica = true;
 
-    private boolean eh_adicional;
+    private Boolean eh_adicional;
     private LocalDate data_emissao;
 
     /*
@@ -73,7 +73,7 @@ public class Cartao {
         this.limite_disponivel = novosDados.getLimite_disponivel();
         this.bandeiraCartao = novosDados.getBandeiraCartao();
         this.statusCartao = novosDados.getStatusCartao();
-        this.aprovacao_automatica = novosDados.getAprovacao_automatica();
+        this.aprovacaoAutomatica = novosDados.getAprovacaoAutomatica();
         this.eh_adicional = novosDados.getEh_adicional();
         this.data_emissao = novosDados.getData_emissao();
     }
