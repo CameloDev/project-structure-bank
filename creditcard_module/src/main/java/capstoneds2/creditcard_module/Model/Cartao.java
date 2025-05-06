@@ -48,8 +48,10 @@ public class Cartao {
     @Enumerated(EnumType.STRING)
     private StatusCartao statusCartao;
 
-    private Boolean aprovacao_automatica;
-    private Boolean eh_adicional;
+    @Column(name = "aprovacao_automatica")
+    private boolean aprovacaoAutomatica = true;
+
+    private boolean eh_adicional;
     private LocalDate data_emissao;
 
     /*
