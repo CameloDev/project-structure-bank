@@ -48,7 +48,6 @@ public class FaturaService {
 
         fatura.setValor_total((float) (fatura.getValor_total() + valor));
 
-        // Atualiza saldo do cartão
         Cartao cartao = fatura.getCartao();
         cartao.setLimite_disponivel((float) (cartao.getLimite_disponivel() - valor));
 
@@ -67,7 +66,6 @@ public class FaturaService {
 
         fatura.setStatusFatura(StatusFatura.paga);
 
-        // Libera limite no cartão
         Cartao cartao = fatura.getCartao();
         cartao.setLimite_disponivel(
                 Math.min(
