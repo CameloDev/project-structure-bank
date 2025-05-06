@@ -26,8 +26,10 @@ public class Fatura {
 
     private Float valor_total;
 
-    private LocalDate data_vencimento;
-    private LocalDate data_fechamento;
+    @Column(name = "data_vencimento")
+    private LocalDate dataVencimento;
+    @Column(name = "data_fechamento")
+    private LocalDate dataFechamento;
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)

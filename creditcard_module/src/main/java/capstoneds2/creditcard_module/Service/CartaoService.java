@@ -122,6 +122,7 @@ public class CartaoService {
     public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
         return historicoCartaoRepository.findByCartaoId(cartaoId);
     }
+
     public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));

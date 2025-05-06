@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Table(name = "cartoes")
 @Getter
@@ -43,6 +44,9 @@ public class Cartao {
     @Column(name = "bandeira",nullable = false)
     @Enumerated(EnumType.STRING)
     private BandeiraCartao bandeiraCartao;
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
+    private List<Fatura> faturas;
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
