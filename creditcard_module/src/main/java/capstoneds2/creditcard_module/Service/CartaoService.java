@@ -7,6 +7,7 @@ import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Repository.CartaoRepository;
 import capstoneds2.creditcard_module.Model.Enums.AcaoHistorico;
 import capstoneds2.creditcard_module.Repository.HistoricoCartaoRepository;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -122,7 +123,7 @@ public class CartaoService {
     public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
         return historicoCartaoRepository.findByCartaoId(cartaoId);
     }
-
+// BL-009
     public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
@@ -142,4 +143,60 @@ public class CartaoService {
         historicoCartaoRepository.save(historico);
     }
 
+    // BL-010
+    @Transactional
+    public List<Cartao> listarCartoesAtivos() {
+        return cartaoRepository.findByStatusCartao(StatusCartao.ATIVO);
+    }
+
+    @Transactional
+    public List<Cartao> listarCartoesBloqueados() {
+        return cartaoRepository.findByStatusCartao(StatusCartao.BLOQUEADO);
+    }
+
+    @Transactional
+    public void bloquearCartao(Long cartaoId, String senha) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+/*
+        if (!cartao.getSenha().equals(senha)) {
+            throw new RuntimeException("Senha incorreta");
+        }
+    Vou add a senha na tabela ainda
+ */
+        if (cartao.getStatusCartao() == StatusCartao.BLOQUEADO) {
+            throw new RuntimeException("Cartão já está bloqueado");
+        }
+
+        cartao.setStatusCartao(StatusCartao.BLOQUEADO);
+   //     cartao.adicionarHistorico("Cartão bloqueado temporariamente"); vou add no entity
+
+        cartaoRepository.save(cartao);
+    }
+
+    @Transactional
+    public void desbloquearCartao(Long cartaoId, String senha) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+/*
+        if (!cartao.getSenha().equals(senha)) {
+            throw new RuntimeException("Senha incorreta");
+        }
+    Vou add a senha na tabela ainda
+ */
+        if (!(cartao.getStatusCartao() == StatusCartao.BLOQUEADO)) {
+            throw new RuntimeException("Cartão não está bloqueado");
+        }
+
+        cartao.setStatusCartao(StatusCartao.ATIVO);
+     //   cartao.adicionarHistorico("Cartão desbloqueado"); vou add no entity
+
+        cartaoRepository.save(cartao);
+    }
+
+    @Transactional
+    public Cartao buscarPorId(Long id) {
+        return cartaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+    }
 }
