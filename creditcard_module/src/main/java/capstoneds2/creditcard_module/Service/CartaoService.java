@@ -10,6 +10,7 @@ import capstoneds2.creditcard_module.Repository.HistoricoCartaoRepository;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -23,6 +24,7 @@ public class CartaoService {
         this.cartaoRepository = cartaoRepository;
         this.historicoCartaoRepository = historicoCartaoRepository;
     }
+
     public void gerarCartao(CartaoRegister cartaoRegister) {
         String numero = gerarNumeroCartaoUnico();
         String cvv = String.format("%03d", new Random().nextInt(1000));
@@ -109,7 +111,7 @@ public class CartaoService {
         historico.setCartao(cartao);
         historico.setAcao(AcaoHistorico.ajuste_limite);
         historico.setDetalhes("Ajuste de limite para: " + novoLimite);
-        historico.setAlteracao(LocalDate.now());
+        historico.setDataAlteracao(LocalDateTime.now());
 
         historicoCartaoRepository.save(historico);
 
@@ -121,7 +123,7 @@ public class CartaoService {
     }
 
     public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
-        return historicoCartaoRepository.findByCartaoId(cartaoId);
+        return historicoCartaoRepository.findByCartao_Id(cartaoId);
     }
 // BL-009
     public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
@@ -139,7 +141,7 @@ public class CartaoService {
         historico.setAcao(AcaoHistorico.alteracao_modo_aprovacao);
         historico.setDetalhes("Alterado de " + (antigo ? "AUTOMÁTICO" : "MANUAL") +
                 " para " + (modoAutomatico ? "AUTOMÁTICO" : "MANUAL"));
-        historico.setAlteracao(LocalDate.now());
+        historico.setDataAlteracao(LocalDateTime.now());
         historicoCartaoRepository.save(historico);
     }
 
@@ -155,41 +157,40 @@ public class CartaoService {
     }
 
     @Transactional
-    public void bloquearCartao(Long cartaoId, String senha) {
+    public void bloquearCartao(Long cartaoId, String motivo) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
-/*
-        if (!cartao.getSenha().equals(senha)) {
-            throw new RuntimeException("Senha incorreta");
-        }
-    Vou add a senha na tabela ainda
- */
-        if (cartao.getStatusCartao() == StatusCartao.BLOQUEADO) {
-            throw new RuntimeException("Cartão já está bloqueado");
-        }
 
         cartao.setStatusCartao(StatusCartao.BLOQUEADO);
-   //     cartao.adicionarHistorico("Cartão bloqueado temporariamente"); vou add no entity
+        cartao.adicionarHistorico(AcaoHistorico.bloqueio,
+                "Cartão bloqueado. Motivo: " + motivo);
 
         cartaoRepository.save(cartao);
     }
 
+    @Transactional()
+    public List<HistoricoCartao> consultarHistorico(Long cartaoId) {
+        return historicoCartaoRepository.findByCartao_IdOrderByDataAlteracaoDesc(cartaoId);
+    }
+
     @Transactional
-    public void desbloquearCartao(Long cartaoId, String senha) {
+    public void desbloquearCartao(Long cartaoId, String senha, String motivo) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
-/*
+
         if (!cartao.getSenha().equals(senha)) {
             throw new RuntimeException("Senha incorreta");
         }
-    Vou add a senha na tabela ainda
- */
-        if (!(cartao.getStatusCartao() == StatusCartao.BLOQUEADO)) {
-            throw new RuntimeException("Cartão não está bloqueado");
+
+        if (cartao.getStatusCartao() != StatusCartao.BLOQUEADO) {
+            throw new RuntimeException("Cartão não está bloqueado temporariamente");
         }
 
         cartao.setStatusCartao(StatusCartao.ATIVO);
-     //   cartao.adicionarHistorico("Cartão desbloqueado"); vou add no entity
+
+
+        cartao.adicionarHistorico(AcaoHistorico.desbloqueio,
+                "Cartão desbloqueado. Motivo: " + motivo);
 
         cartaoRepository.save(cartao);
     }
