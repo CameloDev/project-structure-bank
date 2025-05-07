@@ -11,6 +11,6 @@ public class DashboardController {
     private Label saudacaoLabel;
 
     public void initialize() {
-        saudacaoLabel.setText("Olá, Vitória Barbosa 👋");
+        saudacaoLabel.setText("Olá, Vitin miu grau 👋");
     }
 }

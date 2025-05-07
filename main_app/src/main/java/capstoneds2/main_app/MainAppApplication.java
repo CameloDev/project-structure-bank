@@ -24,7 +24,7 @@ public class MainAppApplication {
         String activeModule = context.getEnvironment().getProperty("app.module.active", "none");
 
         if ("creditcard".equals(activeModule)) {
-            // (Opcional) Setar contexto pai, se quiser reutilizar beans no módulo JavaFX
+
             CreditCardJavaFxApp.setParentContext(context);
 
             Application.launch(CreditCardJavaFxApp.class, args);
