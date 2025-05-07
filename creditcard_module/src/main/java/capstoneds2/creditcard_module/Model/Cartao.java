@@ -1,5 +1,6 @@
 package capstoneds2.creditcard_module.Model;
 
+import capstoneds2.creditcard_module.Model.Enums.AcaoHistorico;
 import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
 import capstoneds2.creditcard_module.Model.Enums.StatusCartao;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "cartoes")
@@ -58,6 +60,14 @@ public class Cartao {
     private Boolean eh_adicional;
     private LocalDate data_emissao;
 
+    // fetch = FetchType.LAZY
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HistoricoCartao> historicos = new ArrayList<>();
+
+    @Column(nullable = false)
+    private String senha;
+
+
     /*
     Explicando bem basico, aqui é meio que a tabela do banco de dados,
     mas de forma complexa é a base da api, tudo que criar modificar e deletar vai vir apartir dele,
@@ -80,6 +90,16 @@ public class Cartao {
         this.aprovacaoAutomatica = novosDados.getAprovacaoAutomatica();
         this.eh_adicional = novosDados.getEh_adicional();
         this.data_emissao = novosDados.getData_emissao();
+    }
+/*
+    Construtor para adicionar o historico
+ */
+    public void adicionarHistorico(AcaoHistorico acao, String detalhes) {
+        HistoricoCartao historico = new HistoricoCartao();
+        historico.setCartao(this);
+        historico.setAcao(acao);
+        historico.setDetalhes(detalhes);
+        this.historicos.add(historico);
     }
 
 }

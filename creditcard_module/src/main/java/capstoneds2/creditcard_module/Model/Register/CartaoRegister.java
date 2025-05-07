@@ -6,7 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 public record CartaoRegister(
         Boolean aprovacao_automatica,
         Boolean eh_adicional,
-        BandeiraCartao bandeiraCartao
+        BandeiraCartao bandeiraCartao,
+        String Senha
         // futuramente: Long clienteId
 ) {
 }

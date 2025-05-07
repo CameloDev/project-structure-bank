@@ -16,7 +16,7 @@ public class HistoricoCartaoService {
     }
     public List<HistoricoCartao> obterHistorico(Long cartaoId, LocalDate startDate, LocalDate endDate) {
         if (startDate != null && endDate != null) {
-            return historicoCartaoRepository.findByCartaoIdAndAlteracaoBetween(cartaoId, startDate, endDate);
+            return historicoCartaoRepository.findByCartaoIdAndDataAlteracaoBetween(cartaoId, startDate, endDate);
         }
         return historicoCartaoRepository.findByCartaoId(cartaoId);
     }
