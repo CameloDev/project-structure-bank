@@ -57,7 +57,9 @@ public class Cartao {
     @Column(name = "aprovacao_automatica")
     private Boolean aprovacaoAutomatica = true;
 
-    private Boolean eh_adicional;
+    @Column(name = "eh_adicional")
+    private Boolean ehAdicional = false;
+
     private LocalDate data_emissao;
 
     // fetch = FetchType.LAZY
@@ -88,7 +90,7 @@ public class Cartao {
         this.bandeiraCartao = novosDados.getBandeiraCartao();
         this.statusCartao = novosDados.getStatusCartao();
         this.aprovacaoAutomatica = novosDados.getAprovacaoAutomatica();
-        this.eh_adicional = novosDados.getEh_adicional();
+        this.ehAdicional = novosDados.getEhAdicional();
         this.data_emissao = novosDados.getData_emissao();
     }
 /*

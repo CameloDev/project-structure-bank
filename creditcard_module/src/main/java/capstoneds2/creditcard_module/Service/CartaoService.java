@@ -41,9 +41,10 @@ public class CartaoService {
         cartao.setBandeiraCartao(cartaoRegister.bandeiraCartao());
         cartao.setStatusCartao(StatusCartao.ATIVO);
         cartao.setAprovacaoAutomatica(cartaoRegister.aprovacao_automatica());
-        cartao.setEh_adicional(cartaoRegister.eh_adicional());
+        cartao.setEhAdicional(cartaoRegister.eh_adicional());
+        cartao.setSenha(cartaoRegister.Senha());
 
-        cartao.setNome_impresso("JOAO DA SILVA");
+        cartao.setNome_impresso("JOAO DA SILVA"); // trocar ai para o nome real do cara quando pegar do UserID
 
         cartaoRepository.save(cartao);
     }
@@ -200,4 +201,8 @@ public class CartaoService {
         return cartaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
     }
+
+    /*
+    Vou add depois o BL-013, vou dormir
+     */
 }
