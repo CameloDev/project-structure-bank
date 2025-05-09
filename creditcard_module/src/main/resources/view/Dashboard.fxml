@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="capstoneds2.creditcard_module.View.Controller.HelloWorldController">
-   <BorderPane prefHeight="200.0" prefWidth="200.0">
+<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="capstoneds2.creditcard_module.View.Controller.HelloWorldController">
+   <BorderPane prefHeight="468.0" prefWidth="857.0">
       <center>
           <Label text="Hello, World!" BorderPane.alignment="CENTER" />
       </center>
