@@ -1,33 +1,108 @@
-.sidebar {
-    -fx-background-color: #1e2d56;
-    -fx-padding: 20;
-}
-
 .logo {
+    -fx-font-size: 18px;
     -fx-text-fill: white;
-    -fx-font-size: 18;
     -fx-font-weight: bold;
-}
-
-.header {
-    -fx-background-color: #ffffff;
-    -fx-border-color: lightgray;
-    -fx-alignment: center-left;
 }
 
 .welcome {
-    -fx-font-size: 16;
-    -fx-text-fill: #333;
-}
-
-.sectionTitle {
-    -fx-font-size: 16;
-    -fx-font-weight: bold;
+    -fx-font-size: 16px;
     -fx-text-fill: #1e2d56;
+    -fx-font-weight: bold;
 }
 
 .card {
     -fx-background-color: linear-gradient(to right, #0045a0, #00a4e4);
-    -fx-border-radius: 8;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 2);
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.card-text {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.sectionTitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e2d56;
+}
+
+/* Estilo do menu lateral */
+.sidebar {
+    -fx-background-color: #1e2d56;
+    -fx-padding: 30 0 30 0;
+    -fx-pref-height: 100%;
+}
+
+/* Cor aplicada ao AnchorPane inteiro */
+.sidebar-anchor {
+    -fx-background-color: #1e2d56;
+}
+
+/* Estilo da logo */
+.logo {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Estilo dos links do menu */
+.sidebar-link {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-underline: false;
+}
+
+.sidebar-link:hover {
+    -fx-text-fill: #00a4e4;
+    -fx-underline: true;
+}
+
+.credit-card-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.card-label {
+    -fx-text-fill: #555;
+    -fx-font-size: 12px;
+}
+
+.card-bold {
+    -fx-text-fill: #000;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.card-active {
+    -fx-text-fill: green;
+    -fx-font-weight: bold;
+}
+
+.info-box {
+    -fx-padding: 10;
+    -fx-background-color: #f6f6f6;
+    -fx-background-radius: 10;
+    -fx-min-width: 150;
+    -fx-alignment: center;
+}
+
+.info-title {
+    -fx-text-fill: #555;
+    -fx-font-size: 12px;
+}
+
+.info-value {
+    -fx-text-fill: #000;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
 }

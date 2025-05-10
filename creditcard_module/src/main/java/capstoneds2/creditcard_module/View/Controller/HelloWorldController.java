@@ -9,12 +9,4 @@ import java.awt.*;
 
 public class HelloWorldController {
 
-    @FXML
-    private Button botaoTests;
-
-    @FXML
-    public void initialize() {
-        botaoTests.setOnAction(event -> System.out.println("Hello, World!"));
-
-    }
 }
