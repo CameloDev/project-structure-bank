@@ -8,7 +8,7 @@
 <StackPane prefHeight="800.0" prefWidth="1200.0"
            xmlns="http://javafx.com/javafx/17.0.12"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="capstoneds2.creditcard_module.View.Controller.HelloWorldController">
+           fx:controller="capstoneds2.creditcard_module.View.Controller.DashboardController">
 
    <children>
       <SplitPane dividerPositions="0.18" prefHeight="800.0" prefWidth="1200.0">
@@ -110,13 +110,14 @@
                         </HBox>
 
                         <!-- Botões de ação -->
+                        <!-- Botões de ação -->
                         <HBox spacing="20.0" alignment="CENTER_LEFT">
                            <children>
-                              <Button prefWidth="140.0" text="Solicitar Cartão" />
-                              <Button prefWidth="140.0" text="Bloquear Cartão" />
-                              <Button prefWidth="140.0" text="Gerar 2ª via" />
-                              <Button prefWidth="140.0" text="Visualizar Fatura" />
-                              <Button prefWidth="140.0" text="Aumentar Limite" />
+                              <Button fx:id="btnSolicitarCartao" prefWidth="140.0" text="Solicitar Cartão" />
+                              <Button fx:id="btnBloquearCartao" prefWidth="140.0" text="Bloquear Cartão" />
+                              <Button fx:id="btnSegundaVia" prefWidth="140.0" text="Gerar 2ª via" />
+                              <Button fx:id="btnVisualizarFatura" prefWidth="140.0" text="Visualizar Fatura" />
+                              <Button fx:id="btnAumentarLimite" prefWidth="140.0" text="Aumentar Limite" />
                            </children>
                         </HBox>
                      </children>

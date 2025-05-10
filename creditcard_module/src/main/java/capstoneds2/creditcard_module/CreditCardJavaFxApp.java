@@ -6,49 +6,35 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.context.ConfigurableApplicationContext;
-import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Objects;
+import java.io.IOException;
 
+@Component
 public class CreditCardJavaFxApp extends Application {
 
-    @Setter
     private static ConfigurableApplicationContext parentContext;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // Carrega o FXML
-        try (InputStream fxmlStream = getClass().getResourceAsStream("/view/Dashboard.fxml")) {
-            if (fxmlStream == null) {
-                throw new FileNotFoundException("FXML file not found.");
-            }
+    public void start(Stage primaryStage) throws IOException {
+        // Configura o FXMLLoader para usar beans do Spring
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Dashboard.fxml"));
+        loader.setControllerFactory(parentContext::getBean); // Usa o contexto do módulo principal
 
-            FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(fxmlStream);
+        Parent root = loader.load();
 
-            Scene scene = new Scene(root, 1200, 800); // ajuste para tela cheia
+        Scene scene = new Scene(root, 1200, 800);
 
-            // 👉 Carrega o CSS aqui
-            String css = Objects.requireNonNull(getClass().getResource("/view/dashboard.css")).toExternalForm();
-            scene.getStylesheets().add(css);
+        // Carrega CSS
+        String css = getClass().getResource("/view/dashboard.css").toExternalForm();
+        scene.getStylesheets().add(css);
 
-            primaryStage.setTitle("Cartão de Crédito - Dashboard");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new RuntimeException("FXML file not found in resources.");
-        }
+        primaryStage.setTitle("Cartão de Crédito - Dashboard");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void setParentContext(ConfigurableApplicationContext context) {
         parentContext = context;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

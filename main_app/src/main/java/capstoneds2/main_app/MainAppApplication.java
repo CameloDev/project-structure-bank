@@ -1,11 +1,15 @@
 package capstoneds2.main_app;
 
 import capstoneds2.creditcard_module.CreditCardJavaFxApp;
+import capstoneds2.creditcard_module.CreditCardModuleConfig;
 import javafx.application.Application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
@@ -16,6 +20,8 @@ import org.springframework.context.annotation.ComponentScan;
         "capstoneds2.commons_module",
         "capstoneds2.main_app"
 })
+@Import(CreditCardModuleConfig.class)
+@EnableTransactionManagement
 public class MainAppApplication {
 
     public static void main(String[] args) {

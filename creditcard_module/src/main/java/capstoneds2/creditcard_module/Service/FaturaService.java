@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+@Service
 public class FaturaService {
 
     private final FaturaRepository faturaRepository;

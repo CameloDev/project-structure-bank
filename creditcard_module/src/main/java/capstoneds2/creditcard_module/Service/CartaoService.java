@@ -8,6 +8,8 @@ import capstoneds2.creditcard_module.Repository.CartaoRepository;
 import capstoneds2.creditcard_module.Model.Enums.AcaoHistorico;
 import capstoneds2.creditcard_module.Repository.HistoricoCartaoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@Service
 public class CartaoService {
-
 
     private final CartaoRepository cartaoRepository;
     private final HistoricoCartaoRepository historicoCartaoRepository;
@@ -126,7 +128,7 @@ public class CartaoService {
     public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
         return historicoCartaoRepository.findByCartao_Id(cartaoId);
     }
-// BL-009
+    // BL-009
     public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
