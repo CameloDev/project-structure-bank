@@ -34,13 +34,12 @@ public class DashboardController {
 
     private void solicitarCartao() {
         try {
-            String nomeUsuario = "João da Silva"; // Aqui deve pegar o nome do usuário logado
             String senha = solicitarSenhaViaDialog();
-            BandeiraCartao bandeira = BandeiraCartao.visa; // Exemplo fixo
+            BandeiraCartao bandeira = BandeiraCartao.visa;
 
             CartaoRegister cartaoRegister = new CartaoRegister(
-                    true, // Aprovação automática
-                    false, // Cartão adicional
+                    true,
+                    false,
                     bandeira,
                     senha
             );
