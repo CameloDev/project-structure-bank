@@ -2,6 +2,7 @@ package capstoneds2.creditcard_module.Service;
 
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Repository.HistoricoCartaoRepository;
+import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class HistoricoCartaoService {
     private final HistoricoCartaoRepository historicoCartaoRepository;
 
