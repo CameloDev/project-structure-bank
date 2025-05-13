@@ -57,7 +57,7 @@ CREATE TABLE pagamentos (
 CREATE TABLE historico_cartoes (
                                    historico_id INT AUTO_INCREMENT PRIMARY KEY,
                                    cartao_id INT NOT NULL,
-                                   acao ENUM('bloqueio', 'desbloqueio', 'ajuste_limite', 'alteracao_status') NOT NULL,
+                                   acao ENUM('bloqueio', 'desbloqueio', 'ajuste_limite', 'alteracao_status', 'alteracao_modo_aprovacao', 'solicitacao') NOT NULL,
                                    detalhes TEXT,
                                    data_alteracao DATETIME DEFAULT CURRENT_TIMESTAMP,
                                    FOREIGN KEY (cartao_id) REFERENCES cartoes(cartao_id)
