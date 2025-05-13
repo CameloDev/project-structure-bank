@@ -6,11 +6,12 @@
 <?import javafx.scene.layout.*?>
 
 <StackPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="capstoneds2.creditcard_module.View.Controller.DashboardController">
-   <ScrollPane prefHeight="-Infinity" prefWidth="-Infinity">
+   <ScrollPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+               fitToWidth="true" fitToHeight="true" pannable="true" vbarPolicy="AS_NEEDED" hbarPolicy="AS_NEEDED">
       <SplitPane dividerPositions="0.18" prefHeight="800.0" prefWidth="1200.0">
          <!-- Sidebar -->
          <items>
-            <AnchorPane prefWidth="220.0" styleClass="sidebar-anchor">
+            <AnchorPane prefWidth="280.0" styleClass="sidebar-anchor">
                <children>
                   <VBox alignment="TOP_CENTER" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                      <children>
