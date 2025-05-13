@@ -27,4 +27,9 @@ public class HistoricoCartaoService {
         return historicoCartaoRepository.findById(historicoId);
     }
 
+    // Apenas para testar
+    public List<HistoricoCartao> listarTodosOsHistoricos() {
+        return historicoCartaoRepository.findAll();
+    }
+
 }

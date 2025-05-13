@@ -5,41 +5,33 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane prefHeight="800.0" prefWidth="1200.0"
-           xmlns="http://javafx.com/javafx/17.0.12"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="capstoneds2.creditcard_module.View.Controller.DashboardController">
-
-   <children>
+<StackPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="capstoneds2.creditcard_module.View.Controller.DashboardController">
+   <ScrollPane prefHeight="-Infinity" prefWidth="-Infinity">
       <SplitPane dividerPositions="0.18" prefHeight="800.0" prefWidth="1200.0">
-
          <!-- Sidebar -->
          <items>
             <AnchorPane prefWidth="220.0" styleClass="sidebar-anchor">
                <children>
-                  <VBox alignment="TOP_CENTER" spacing="15.0"
-                        AnchorPane.leftAnchor="0.0"
-                        AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="40.0">
+                  <VBox alignment="TOP_CENTER" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                      <children>
-                        <Label text="JALA" styleClass="logo">
+                        <Label styleClass="logo" text="JALA">
                            <graphic>
                               <ImageView fitHeight="40.0" preserveRatio="true">
                                  <image>
-                                    <Image url="@/view/assets/bank-logo.png"/>
+                                    <Image url="@/view/assets/bank-logo.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Separator prefWidth="180.0"/>
-                        <VBox spacing="10.0" alignment="TOP_CENTER">
+                        <Separator prefWidth="180.0" />
+                        <VBox alignment="TOP_CENTER" spacing="10.0">
                            <children>
-                              <Hyperlink text="Dashboard" styleClass="sidebar-link"/>
-                              <Hyperlink text="Transações" styleClass="sidebar-link"/>
-                              <Hyperlink text="Pagamentos" styleClass="sidebar-link"/>
-                              <Hyperlink text="Empréstimos" styleClass="sidebar-link"/>
-                              <Hyperlink text="Configurações" styleClass="sidebar-link"/>
-                              <Hyperlink text="Sair" styleClass="sidebar-link"/>
+                              <Hyperlink styleClass="sidebar-link" text="Dashboard" />
+                              <Hyperlink styleClass="sidebar-link" text="Transações" />
+                              <Hyperlink styleClass="sidebar-link" text="Pagamentos" />
+                              <Hyperlink styleClass="sidebar-link" text="Empréstimos" />
+                              <Hyperlink styleClass="sidebar-link" text="Configurações" />
+                              <Hyperlink styleClass="sidebar-link" text="Sair" />
                            </children>
                         </VBox>
                      </children>
@@ -48,80 +40,73 @@
             </AnchorPane>
 
             <!-- Conteúdo principal -->
-            <AnchorPane>
+            <AnchorPane stylesheets="@dashboard.css">
                <children>
 
                   <!-- Saudação -->
                   <Label layoutX="30.0" layoutY="30.0" styleClass="welcome" text="Olá, Pé de Galinha" />
 
                   <!-- Seção Meus Cartões -->
-                  <VBox layoutX="30.0" layoutY="80.0" spacing="15.0">
+                  <VBox layoutX="30.0" layoutY="80.0" spacing="30.0">
 
-                     <!-- Título -->
-                     <children>
-                        <Label text="Meus Cartões" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                        <Label text="Gerencie seus cartões, faturas e limites" style="-fx-text-fill: #666;" />
+                     <!-- Título e subtítulo -->
+                     <HBox spacing="40.0" alignment="BOTTOM_LEFT">
+                        <VBox spacing="10.0" translateY="50.0">
+                           <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Meus Cartões" />
+                           <Label style="-fx-text-fill: #666; -fx-font-weight: bold;" text="Gerencie seus cartões, faturas e limites" />
+                        </VBox>
 
-                        <!-- Cartão e info -->
-                        <HBox spacing="30.0">
-                           <children>
-                              <VBox spacing="10.0" prefWidth="500.0" styleClass="credit-card-box">
-                                 <padding><Insets top="20.0" bottom="20.0" left="20.0" right="20.0"/></padding>
-                                 <children>
-                                    <HBox spacing="20.0">
-                                       <ImageView fitHeight="80.0" preserveRatio="true">
-                                          <image>
-                                             <Image url="@/view/assets/cartao.png"/>
-                                          </image>
-                                       </ImageView>
-                                       <VBox spacing="5.0">
-                                          <Label text="Final" styleClass="card-label" />
-                                          <Label text="1234" styleClass="card-bold" />
-                                          <Label text="Situação" styleClass="card-label" />
-                                          <Label text="Ativo" styleClass="card-active" />
-                                          <Label text="Limite disponível" styleClass="card-label" />
-                                          <Label text="R$ 50.000,00" styleClass="card-bold" />
-                                       </VBox>
-                                    </HBox>
-                                    <Button text="Ver detalhes" prefWidth="120.0" />
-                                 </children>
-                              </VBox>
-
-                              <!-- Informações financeiras -->
-                              <VBox spacing="15.0" alignment="CENTER">
-                                 <children>
-                                    <HBox spacing="20.0">
-                                       <VBox styleClass="info-box">
-                                          <Label text="Fatura atual" styleClass="info-title"/>
-                                          <Label text="R$ 35.000,00" styleClass="info-value"/>
-                                       </VBox>
-                                       <VBox styleClass="info-box">
-                                          <Label text="Limite disponível" styleClass="info-title"/>
-                                          <Label text="R$ 50.000,00" styleClass="info-value"/>
-                                       </VBox>
-                                       <VBox styleClass="info-box">
-                                          <Label text="Próximo vencimento" styleClass="info-title"/>
-                                          <Label text="21/05/2025" styleClass="info-value"/>
-                                       </VBox>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </children>
+                        <HBox spacing="40.0" alignment="CENTER" styleClass="credit-card-box">
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <ImageView fitHeight="80.0" preserveRatio="true">
+                              <image>
+                                 <Image url="@/view/assets/cartao.png" />
+                              </image>
+                           </ImageView>
+                           <VBox spacing="5.0">
+                              <Label styleClass="card-label" text="Final" />
+                              <Label styleClass="card-bold" text="1234" />
+                              <Label styleClass="card-label" text="Situação" />
+                              <Label styleClass="card-active" text="Ativo" />
+                              <Label styleClass="card-label" text="Limite disponível" />
+                              <Label styleClass="card-bold" text="R$ 50.000,00" />
+                              <Button fx:id="btnDetalhesCartao" prefWidth="120.0" text="Ver detalhes" />
+                           </VBox>
                         </HBox>
+                     </HBox>
+                     <!-- Cartão e info -->
+                     <HBox spacing="40.0">
+                        <!-- Informações financeiras -->
+                        <VBox alignment="CENTER" spacing="15.0">
+                           <HBox spacing="20.0">
+                              <VBox styleClass="info-box">
+                                 <Label styleClass="info-title" text="Fatura atual" />
+                                 <Label styleClass="info-value" text="R$ 35.000,00" />
+                              </VBox>
+                              <VBox styleClass="info-box">
+                                 <Label styleClass="info-title" text="Limite disponível" />
+                                 <Label styleClass="info-value" text="R$ 50.000,00" />
+                              </VBox>
+                              <VBox styleClass="info-box">
+                                 <Label styleClass="info-title" text="Próximo vencimento" />
+                                 <Label styleClass="info-value" text="21/05/2025" />
+                              </VBox>
+                           </HBox>
+                        </VBox>
+                     </HBox>
 
-                        <!-- Botões de ação -->
-                        <!-- Botões de ação -->
-                        <HBox spacing="20.0" alignment="CENTER_LEFT">
-                           <children>
-                              <Button fx:id="btnSolicitarCartao" prefWidth="140.0" text="Solicitar Cartão" />
-                              <Button fx:id="btnBloquearCartao" prefWidth="140.0" text="Bloquear Cartão" />
-                              <Button fx:id="btnSegundaVia" prefWidth="140.0" text="Gerar 2ª via" />
-                              <Button fx:id="btnVisualizarFatura" prefWidth="140.0" text="Visualizar Fatura" />
-                              <Button fx:id="btnAumentarLimite" prefWidth="140.0" text="Aumentar Limite" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
+                     <!-- Botões de ação -->
+                     <HBox alignment="CENTER_LEFT" spacing="40.0">
+                        <children>
+                           <Button fx:id="btnSolicitarCartao" styleClass="button-info" prefWidth="140.0" text="Solicitar Cartão" />
+                           <Button fx:id="btnBloquearCartao"  styleClass="button-info" prefWidth="140.0" text="Bloquear Cartão" />
+                           <Button fx:id="btnSegundaVia"  styleClass="button-info" prefWidth="140.0" text="Gerar 2ª via" />
+                           <Button fx:id="btnVisualizarFatura" styleClass="button-info" prefWidth="140.0" text="Visualizar Fatura" />
+                           <Button fx:id="btnAumentarLimite" styleClass="button-info" prefWidth="140.0" text="Aumentar Limite" />
+                        </children>
+                     </HBox>
 
                   <!-- Tabela de histórico -->
                   <Label layoutX="30.0" layoutY="420.0" styleClass="sectionTitle" text="Histórico de transações" />
@@ -130,13 +115,13 @@
                         <TableColumn fx:id="colData" prefWidth="100.0" text="Data" />
                         <TableColumn fx:id="colDescricao" prefWidth="250.0" text="Descrição" />
                         <TableColumn fx:id="colParcelamento" prefWidth="150.0" text="Parcelamento" />
-                        <TableColumn fx:id="colValor" prefWidth="100.0" text="Valor" />
+                        <TableColumn fx:id="colCartaoId" prefWidth="100.0" text="Valor" />
                      </columns>
                   </TableView>
-
+                  </VBox>
                </children>
             </AnchorPane>
          </items>
       </SplitPane>
-   </children>
+   </ScrollPane>
 </StackPane>

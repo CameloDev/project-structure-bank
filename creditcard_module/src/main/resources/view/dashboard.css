@@ -6,12 +6,12 @@
 
 .welcome {
     -fx-font-size: 16px;
-    -fx-text-fill: #1e2d56;
+    -fx-text-fill: #2c53b3;
     -fx-font-weight: bold;
 }
 
 .card {
-    -fx-background-color: linear-gradient(to right, #0045a0, #00a4e4);
+    -fx-background-color: linear-gradient(to right, #2c53b3, #00a4e4);
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 2);
@@ -31,19 +31,19 @@
 .sectionTitle {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e2d56;
+    -fx-text-fill: #2c53b3;
 }
 
 /* Estilo do menu lateral */
 .sidebar {
-    -fx-background-color: #1e2d56;
+    -fx-background-color: #2c53b3;
     -fx-padding: 30 0 30 0;
     -fx-pref-height: 100%;
 }
 
 /* Cor aplicada ao AnchorPane inteiro */
 .sidebar-anchor {
-    -fx-background-color: #1e2d56;
+    -fx-background-color: #2c53b3;
 }
 
 /* Estilo da logo */
@@ -61,7 +61,7 @@
 }
 
 .sidebar-link:hover {
-    -fx-text-fill: #00a4e4;
+    -fx-text-fill: #2c53b3;
     -fx-underline: true;
 }
 
@@ -106,3 +106,22 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
+.button-info{
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 2;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-min-width: 150;
+    -fx-min-height: 150;
+    -fx-alignment: center;
+}
+.button-info:hover{
+    -fx-background-color: #dddbdb;
+    -fx-background-radius: 10;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+
+}
+
