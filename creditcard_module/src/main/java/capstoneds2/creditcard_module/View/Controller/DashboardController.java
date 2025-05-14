@@ -1,5 +1,6 @@
 package capstoneds2.creditcard_module.View.Controller;
 
+import capstoneds2.creditcard_module.Model.Cartao;
 import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
@@ -36,7 +37,7 @@ public class DashboardController {
     private TableColumn<HistoricoCartao, Long> colCartaoId;
 
     @FXML
-    private Label FaturaLabel,LimiteLabel, VencimentoLabel;
+    private Label FaturaLabel,LimiteLabel, VencimentoLabel, lblNumeroFinal, lblStatus, lblLimite;
 
     private final HistoricoCartaoService historicoCartaoService;
     private final CartaoService cartaoService;
@@ -61,10 +62,7 @@ public class DashboardController {
 
         inicializarTabelaTransacoes();
         carregarHistorico();
-
-        // FaturaLabel.setText(fatura);
-        // LimiteLabel.setText(limite);
-        // VencimentoLabel.setText(vencimento);
+        listarCartao();
     }
 
     // Solicitar Cartao
@@ -118,8 +116,27 @@ public class DashboardController {
     }
 
     // Listar Cartao
-    public void ListarCartao(){
+    public void listarCartao() {
+        List<Cartao> cartoes = cartaoService.listarCartoesAtivos();
 
+        // Filtra pelo ID 1 (caso exista) -> irei usar ClienteID entao é apenas teste para manter uma base
+        Optional<Cartao> cartaoOptional = cartoes.stream()
+                .filter(c -> c.getId() == 1L)
+                .findFirst();
+
+        if (cartaoOptional.isPresent()) {
+            Cartao cartao = cartaoOptional.get();
+
+            String numero = cartao.getNumero();
+            lblNumeroFinal.setText(numero.substring(numero.length() - 4));
+            lblStatus.setText(cartao.getStatusCartao().name().toLowerCase());
+            lblLimite.setText(String.format("R$ %.2f", cartao.getLimite_disponivel()));
+        } else {
+            // Trata caso o cartão com ID 1 não exista
+            lblNumeroFinal.setText("----");
+            lblStatus.setText("Indisponível");
+            lblLimite.setText("R$ 0.00");
+        }
     }
 
     // Visualizar Fatura

@@ -65,11 +65,11 @@
                            </ImageView>
                            <VBox spacing="5.0">
                               <Label styleClass="card-label" text="Final" />
-                              <Label styleClass="card-bold" text="1234" />
+                              <Label fx:id="lblNumeroFinal" styleClass="card-bold" text="1234" />
                               <Label styleClass="card-label" text="Situação" />
-                              <Label styleClass="card-active" text="Ativo" />
+                              <Label fx:id="lblStatus" styleClass="card-active" text="Ativo" />
                               <Label styleClass="card-label" text="Limite disponível" />
-                              <Label styleClass="card-bold" text="R$ 50.000,00" />
+                              <Label fx:id="lblLimite" styleClass="card-bold" text="R$ 50.000,00" />
                               <Button fx:id="btnDetalhesCartao" prefWidth="120.0" text="Ver detalhes" />
                            </VBox>
                         </HBox>
