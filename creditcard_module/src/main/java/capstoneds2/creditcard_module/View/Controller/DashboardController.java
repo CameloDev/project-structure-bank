@@ -7,6 +7,7 @@ import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Service.CartaoService;
 import capstoneds2.creditcard_module.Service.Exceptions.CustomException;
+import capstoneds2.creditcard_module.Service.FaturaService;
 import capstoneds2.creditcard_module.Service.HistoricoCartaoService;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -44,16 +45,18 @@ public class DashboardController {
     private TableColumn<HistoricoCartao, Long> colCartaoId;
 
     @FXML
-    private Label FaturaLabel,LimiteLabel, VencimentoLabel, lblNumeroFinal, lblStatus, lblLimite;
+    private Label FaturaLabel ,LimiteLabel, VencimentoLabel, lblNumeroFinal, lblStatus, lblLimite;
 
     private final HistoricoCartaoService historicoCartaoService;
     private final CartaoService cartaoService;
+    private final FaturaService faturaService;
 
     private final ObservableList<HistoricoCartao> listaTransacoes = FXCollections.observableArrayList();
 
-    public DashboardController(CartaoService cartaoService, HistoricoCartaoService historicoCartaoService) {
+    public DashboardController(CartaoService cartaoService, HistoricoCartaoService historicoCartaoService, FaturaService faturaService) {
         this.historicoCartaoService = historicoCartaoService;
         this.cartaoService = cartaoService;
+        this.faturaService = faturaService;
     }
 
     @FXML
