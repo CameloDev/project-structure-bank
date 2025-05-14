@@ -23,4 +23,12 @@ public class DialogsUtils {
         alerta.setContentText(mensagem);
         alerta.showAndWait();
     }
+    public static String solicitarSenhaViaDialog() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Confirmação");
+        dialog.setHeaderText("Digite a senha do novo cartão");
+        dialog.setContentText("Senha:");
+        Optional<String> resultado = dialog.showAndWait();
+        return resultado.orElseThrow(() -> new RuntimeException("Senha não informada"));
+    }
 }

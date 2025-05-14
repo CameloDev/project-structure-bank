@@ -18,8 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.mostrarAlerta;
-import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.solicitarEntradaViaDialog;
+import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
 
 @Controller
 public class DashboardController {
@@ -99,15 +98,6 @@ public class DashboardController {
             e.printStackTrace();
             mostrarAlerta("Erro", "Não foi possível solicitar o cartão.", Alert.AlertType.ERROR);
         }
-    }
-    // Solicitar Cartao
-    private String solicitarSenhaViaDialog() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Confirmação");
-        dialog.setHeaderText("Digite a senha do novo cartão");
-        dialog.setContentText("Senha:");
-        Optional<String> resultado = dialog.showAndWait();
-        return resultado.orElseThrow(() -> new RuntimeException("Senha não informada"));
     }
     // Bloquear Cartao
     private void bloquearCartao() {
