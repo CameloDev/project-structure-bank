@@ -44,7 +44,7 @@ public class CartaoService {
         cartao.setLimite_total(5000f);
         cartao.setLimite_disponivel(5000f);
         cartao.setBandeiraCartao(cartaoRegister.bandeiraCartao());
-        cartao.setStatusCartao(StatusCartao.ATIVO);
+        cartao.setStatusCartao(StatusCartao.ativo);
         cartao.setAprovacaoAutomatica(cartaoRegister.aprovacao_automatica());
         cartao.setEhAdicional(cartaoRegister.eh_adicional());
         cartao.setSenha(cartaoRegister.Senha());
@@ -168,12 +168,12 @@ public class CartaoService {
     // BL-010
     @Transactional
     public List<Cartao> listarCartoesAtivos() { // cliente ID
-        return cartaoRepository.findByStatusCartao(StatusCartao.ATIVO);
+        return cartaoRepository.findByStatusCartao(StatusCartao.ativo);
     }
 
     @Transactional
     public List<Cartao> listarCartoesBloqueados() { // Cliente Id
-        return cartaoRepository.findByStatusCartao(StatusCartao.BLOQUEADO);
+        return cartaoRepository.findByStatusCartao(StatusCartao.bloqueado);
     }
 
     public void bloquearCartao(Long cartaoId, String senha, String motivo) {
@@ -184,7 +184,7 @@ public class CartaoService {
             throw new CustomException("Senha incorreta.");
         }
 
-        cartao.setStatusCartao(StatusCartao.BLOQUEADO);
+        cartao.setStatusCartao(StatusCartao.bloqueado);
         cartaoRepository.save(cartao);
 
         historicoCartaoService.registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);

@@ -4,8 +4,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import java.util.Optional;
 
-public class DialogsController {
-
+public class DialogsUtils {
+    // Classe utilitária para usar ai
     public static String solicitarEntradaViaDialog(String titulo, String mensagem) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle(titulo);

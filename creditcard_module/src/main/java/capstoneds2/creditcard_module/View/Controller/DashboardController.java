@@ -18,8 +18,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static capstoneds2.creditcard_module.View.Controller.DialogsController.mostrarAlerta;
-import static capstoneds2.creditcard_module.View.Controller.DialogsController.solicitarEntradaViaDialog;
+import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.mostrarAlerta;
+import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.solicitarEntradaViaDialog;
 
 @Controller
 public class DashboardController {
@@ -93,7 +93,7 @@ public class DashboardController {
             );
 
             cartaoService.gerarCartao(cartaoRegister);
-
+            carregarHistorico();
             mostrarAlerta("Cartão", "Cartão solicitado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class DashboardController {
                 return;
             }
             cartaoService.bloquearCartao(1L, senha, motivo);
-
+            carregarHistorico();
             mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (CustomException e) {
             mostrarAlerta("Erro", e.getMessage(), Alert.AlertType.ERROR);
@@ -155,8 +155,12 @@ public class DashboardController {
     // Tabela
     private void carregarHistorico() {
         try {
+
             List<HistoricoCartao> historico = historicoCartaoService.listarTodosOsHistoricos();
+
             listaTransacoes.setAll(historico);
+
+            inicializarTabelaTransacoes();
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro", "Erro ao carregar histórico de transações.", Alert.AlertType.ERROR);
