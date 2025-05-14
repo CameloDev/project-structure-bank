@@ -18,4 +18,6 @@ public interface FaturaRepository extends JpaRepository<Fatura, Long> {
     List<Fatura> findByCartao_IdAndStatusFatura(
             Long cartaoId, StatusFatura status
     );
+
+    boolean existsByCartao_IdAndDataFechamentoBetween(Long cartaoId, LocalDate primeiroDiaDoMes, LocalDate ultimoDiaDoMes);
 }
