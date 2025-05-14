@@ -141,6 +141,10 @@ public class DashboardController {
             lblNumeroFinal.setText(numero.substring(numero.length() - 4));
             lblStatus.setText(cartao.getStatusCartao().name().toLowerCase());
             lblLimite.setText(String.format("R$ %.2f", cartao.getLimite_disponivel()));
+
+            LimiteLabel.setText(String.format("R$ %.2f", cartao.getLimite_disponivel()));
+            VencimentoLabel.setText(cartao.getData_validade().toString());
+
         } else {
             // Trata caso o cartão com ID 1 não exista
             lblNumeroFinal.setText("----");
