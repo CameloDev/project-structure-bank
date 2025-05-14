@@ -38,8 +38,6 @@ public class DashboardController {
     @FXML
     private Label FaturaLabel,LimiteLabel, VencimentoLabel;
 
-
-
     private final HistoricoCartaoService historicoCartaoService;
     private final CartaoService cartaoService;
 
