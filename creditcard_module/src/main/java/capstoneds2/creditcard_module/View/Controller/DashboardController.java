@@ -162,7 +162,7 @@ public class DashboardController {
             controller.setStage(modal);
 
             Optional<Cartao> cartaoOptional = cartaoService.listarCartoesAtivos().stream()
-                    .filter(c -> c.getId() == 1L) // mudar depois para o clienteId e ele seleciona o cartao que ele quer :)
+                    .filter(c -> c.getId() == 3L) // mudar depois para o clienteId e ele seleciona o cartao que ele quer :)
                     .findFirst();
 
             if (cartaoOptional.isPresent()) {
