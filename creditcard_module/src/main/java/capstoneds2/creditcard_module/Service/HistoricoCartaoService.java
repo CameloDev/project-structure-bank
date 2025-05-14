@@ -1,5 +1,7 @@
 package capstoneds2.creditcard_module.Service;
 
+import capstoneds2.creditcard_module.Model.Cartao;
+import capstoneds2.creditcard_module.Model.Enums.AcaoHistorico;
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Repository.HistoricoCartaoRepository;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,14 @@ public class HistoricoCartaoService {
     // Apenas para testar
     public List<HistoricoCartao> listarTodosOsHistoricos() {
         return historicoCartaoRepository.findAll();
+    }
+
+    public void registrarHistorico(Cartao cartao, AcaoHistorico acao, String detalhes) {
+        HistoricoCartao historico = new HistoricoCartao();
+        historico.setCartao(cartao);
+        historico.setAcao(acao);
+        historico.setDetalhes(detalhes);
+        historicoCartaoRepository.save(historico);
     }
 
 }

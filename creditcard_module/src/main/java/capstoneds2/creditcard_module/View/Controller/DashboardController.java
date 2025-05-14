@@ -4,6 +4,7 @@ import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Service.CartaoService;
+import capstoneds2.creditcard_module.Service.Exceptions.CustomException;
 import capstoneds2.creditcard_module.Service.HistoricoCartaoService;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -64,41 +65,18 @@ public class DashboardController {
     public void initialize() {
         btnSolicitarCartao.setOnAction(event -> {
             solicitarCartao();
-            System.out.println("Solicitando cartao");
+
+        });
+        btnBloquearCartao.setOnAction(event -> {
+            bloquearCartao();
+
         });
 
-        inicializarTabelaTransacoes(); // <-- aqui configuramos a tabela
-        carregarHistorico();           // <-- e carregamos os dados
+        inicializarTabelaTransacoes();
+        carregarHistorico();
     }
 
-    private void inicializarTabelaTransacoes() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-        colData.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(
-                        cellData.getValue().getDataAlteracao().format(formatter)
-                )
-        );
-        colDescricao.setCellValueFactory(new PropertyValueFactory<>("detalhes"));
-        colParcelamento.setCellValueFactory(new PropertyValueFactory<>("acao"));
-        colCartaoId.setCellValueFactory(cellData -> {
-            Long idCartao = cellData.getValue().getCartao().getId();
-            return new SimpleObjectProperty<>(idCartao);
-        });
-
-        tabelaTransacoes.setItems(listaTransacoes);
-    }
-
-    private void carregarHistorico() {
-        try {
-            List<HistoricoCartao> historico = historicoCartaoService.listarTodosOsHistoricos();
-            listaTransacoes.setAll(historico);
-        } catch (Exception e) {
-            e.printStackTrace();
-            mostrarAlerta("Erro", "Erro ao carregar histórico de transações.", Alert.AlertType.ERROR);
-        }
-    }
-
+    // Solicitar Cartao
     private void solicitarCartao() {
         try {
             String senha = solicitarSenhaViaDialog();
@@ -119,7 +97,7 @@ public class DashboardController {
             mostrarAlerta("Erro", "Não foi possível solicitar o cartão.", Alert.AlertType.ERROR);
         }
     }
-
+    // Solicitar Cartao
     private String solicitarSenhaViaDialog() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Confirmação");
@@ -128,12 +106,78 @@ public class DashboardController {
         Optional<String> resultado = dialog.showAndWait();
         return resultado.orElseThrow(() -> new RuntimeException("Senha não informada"));
     }
+    // Bloquear Cartao
+    private void bloquearCartao() {
+        try {
+            // Solicita senha
+            String senha = solicitarEntradaViaDialog("Confirmação de senha", "Digite a senha do cartão:");
+            if (senha == null || senha.isBlank()) {
+                mostrarAlerta("Erro", "Senha não informada.", Alert.AlertType.WARNING);
+                return;
+            }
 
+            String motivo = solicitarEntradaViaDialog("Motivo do bloqueio", "Informe o motivo do bloqueio:");
+            if (motivo == null || motivo.isBlank()) {
+                mostrarAlerta("Erro", "Motivo do bloqueio não informado.", Alert.AlertType.WARNING);
+                return;
+            }
+            cartaoService.bloquearCartao(1L, senha, motivo);
+
+            mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
+        } catch (CustomException e) {
+            mostrarAlerta("Erro", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro inesperado", "Ocorreu um erro ao bloquear o cartão.", Alert.AlertType.ERROR);
+        }
+    }
+
+    // Global -- irei colocar em outra class
     private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensagem);
         alerta.showAndWait();
+    }
+
+    //Global -- irei colocar em outra class
+    private String solicitarEntradaViaDialog(String titulo, String mensagem) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(titulo);
+        dialog.setHeaderText(mensagem);
+        dialog.setContentText(null);
+
+        Optional<String> resultado = dialog.showAndWait();
+        return resultado.orElse(null);
+    }
+
+    // Tabela
+    private void inicializarTabelaTransacoes() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        colData.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getDataAlteracao().format(formatter)
+                )
+        );
+        colDescricao.setCellValueFactory(new PropertyValueFactory<>("detalhes"));
+        colParcelamento.setCellValueFactory(new PropertyValueFactory<>("acao"));
+        colCartaoId.setCellValueFactory(cellData -> {
+            Long idCartao = cellData.getValue().getCartao().getId();
+            return new SimpleObjectProperty<>(idCartao);
+        });
+
+        tabelaTransacoes.setItems(listaTransacoes);
+    }
+    // Tabela
+    private void carregarHistorico() {
+        try {
+            List<HistoricoCartao> historico = historicoCartaoService.listarTodosOsHistoricos();
+            listaTransacoes.setAll(historico);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Erro ao carregar histórico de transações.", Alert.AlertType.ERROR);
+        }
     }
 }
