@@ -11,10 +11,16 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +31,7 @@ import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
 public class DashboardController {
 
     @FXML
-    private Button btnSolicitarCartao, btnBloquearCartao, btnSegundaVia, btnVisualizarFatura, btnAumentarLimite;
+    private Button btnSolicitarCartao, btnBloquearCartao, btnSegundaVia, btnVisualizarFatura, btnAumentarLimite, btnDetalhesCartao;
 
     @FXML
     private TableView<HistoricoCartao> tabelaTransacoes;
@@ -57,6 +63,10 @@ public class DashboardController {
         });
         btnBloquearCartao.setOnAction(event -> {
             bloquearCartao();
+
+        });
+        btnDetalhesCartao.setOnAction(event -> {
+            abrirModalDetalhesCartao();
 
         });
 
@@ -119,9 +129,9 @@ public class DashboardController {
     public void listarCartao() {
         List<Cartao> cartoes = cartaoService.listarCartoesAtivos();
 
-        // Filtra pelo ID 1 (caso exista) -> irei usar ClienteID entao é apenas teste para manter uma base
+        //  irei usar ClienteID entao é apenas teste para manter uma base
         Optional<Cartao> cartaoOptional = cartoes.stream()
-                .filter(c -> c.getId() == 1L)
+                .filter(c -> c.getId() == 3L)
                 .findFirst();
 
         if (cartaoOptional.isPresent()) {
@@ -136,6 +146,35 @@ public class DashboardController {
             lblNumeroFinal.setText("----");
             lblStatus.setText("Indisponível");
             lblLimite.setText("R$ 0.00");
+        }
+    }
+    // Detalhes do cartao
+    public void abrirModalDetalhesCartao() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DetalhesCartaoModal.fxml"));
+            Parent root = loader.load();
+
+            DetalhesCartaoModalController controller = loader.getController();
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setTitle("Detalhes do Cartão");
+            modal.setScene(new Scene(root));
+            controller.setStage(modal);
+
+            Optional<Cartao> cartaoOptional = cartaoService.listarCartoesAtivos().stream()
+                    .filter(c -> c.getId() == 3L) // mudar depois para o clienteId e ele seleciona o cartao que ele quer :)
+                    .findFirst();
+
+            if (cartaoOptional.isPresent()) {
+                controller.preencherDados(cartaoOptional.get());
+                modal.showAndWait();
+            } else {
+                mostrarAlerta("Aviso", "Nenhum cartão encontrado.", Alert.AlertType.WARNING);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Erro ao abrir detalhes do cartão.", Alert.AlertType.ERROR);
         }
     }
 
