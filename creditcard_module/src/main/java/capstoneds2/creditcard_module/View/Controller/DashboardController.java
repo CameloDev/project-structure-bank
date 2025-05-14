@@ -85,7 +85,7 @@ public class DashboardController {
             BandeiraCartao bandeira = BandeiraCartao.visa;
 
             CartaoRegister cartaoRegister = new CartaoRegister(
-                    true,
+                    true, // Add Dialog to Verify it
                     false,
                     bandeira,
                     senha
