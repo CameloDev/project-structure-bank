@@ -38,8 +38,6 @@ public class DashboardController {
     @FXML
     private Label FaturaLabel,LimiteLabel, VencimentoLabel;
 
-
-
     private final HistoricoCartaoService historicoCartaoService;
     private final CartaoService cartaoService;
 
@@ -63,6 +61,10 @@ public class DashboardController {
 
         inicializarTabelaTransacoes();
         carregarHistorico();
+
+        // FaturaLabel.setText(fatura);
+        // LimiteLabel.setText(limite);
+        // VencimentoLabel.setText(vencimento);
     }
 
     // Solicitar Cartao
@@ -113,6 +115,16 @@ public class DashboardController {
             e.printStackTrace();
             mostrarAlerta("Erro inesperado", "Ocorreu um erro ao bloquear o cartão.", Alert.AlertType.ERROR);
         }
+    }
+
+    // Listar Cartao
+    public void ListarCartao(){
+
+    }
+
+    // Visualizar Fatura
+    public void visualizarFatura(){
+
     }
 
     // Tabela
