@@ -2,10 +2,12 @@ package capstoneds2.creditcard_module.View.Controller;
 
 import capstoneds2.creditcard_module.Model.Cartao;
 import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
+import capstoneds2.creditcard_module.Model.Fatura;
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Service.CartaoService;
 import capstoneds2.creditcard_module.Service.Exceptions.CustomException;
+import capstoneds2.creditcard_module.Service.FaturaService;
 import capstoneds2.creditcard_module.Service.HistoricoCartaoService;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -43,16 +45,18 @@ public class DashboardController {
     private TableColumn<HistoricoCartao, Long> colCartaoId;
 
     @FXML
-    private Label FaturaLabel,LimiteLabel, VencimentoLabel, lblNumeroFinal, lblStatus, lblLimite;
+    private Label FaturaLabel ,LimiteLabel, VencimentoLabel, lblNumeroFinal, lblStatus, lblLimite;
 
     private final HistoricoCartaoService historicoCartaoService;
     private final CartaoService cartaoService;
+    private final FaturaService faturaService;
 
     private final ObservableList<HistoricoCartao> listaTransacoes = FXCollections.observableArrayList();
 
-    public DashboardController(CartaoService cartaoService, HistoricoCartaoService historicoCartaoService) {
+    public DashboardController(CartaoService cartaoService, HistoricoCartaoService historicoCartaoService, FaturaService faturaService) {
         this.historicoCartaoService = historicoCartaoService;
         this.cartaoService = cartaoService;
+        this.faturaService = faturaService;
     }
 
     @FXML
@@ -141,6 +145,10 @@ public class DashboardController {
             lblNumeroFinal.setText(numero.substring(numero.length() - 4));
             lblStatus.setText(cartao.getStatusCartao().name().toLowerCase());
             lblLimite.setText(String.format("R$ %.2f", cartao.getLimite_disponivel()));
+
+            LimiteLabel.setText(String.format("R$ %.2f", cartao.getLimite_disponivel()));
+            VencimentoLabel.setText(cartao.getData_validade().toString());
+
         } else {
             // Trata caso o cartão com ID 1 não exista
             lblNumeroFinal.setText("----");
@@ -179,8 +187,27 @@ public class DashboardController {
     }
 
     // Visualizar Fatura
-    public void visualizarFatura(){
+    public void visualizarFatura() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FaturaModal.fxml"));
+            Parent root = loader.load();
 
+            FaturaModalController controller = loader.getController();
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setTitle("Faturas do Cartão");
+            modal.setScene(new Scene(root));
+            controller.setStage(modal);
+
+            // Buscar faturas do cartão ID 1 (ou você pode parametrizar depois)
+            List<Fatura> faturas = faturaService.listarFaturasPorCartao(1L);
+            controller.carregarFaturas(faturas);
+
+            modal.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Erro ao abrir faturas.", Alert.AlertType.ERROR);
+        }
     }
 
     // Tabela
