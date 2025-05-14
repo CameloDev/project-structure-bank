@@ -2,6 +2,7 @@ package capstoneds2.creditcard_module.View.Controller;
 
 import capstoneds2.creditcard_module.Model.Cartao;
 import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
+import capstoneds2.creditcard_module.Model.Fatura;
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Service.CartaoService;
@@ -183,8 +184,27 @@ public class DashboardController {
     }
 
     // Visualizar Fatura
-    public void visualizarFatura(){
+    public void visualizarFatura() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FaturaModal.fxml"));
+            Parent root = loader.load();
 
+            FaturaModalController controller = loader.getController();
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setTitle("Faturas do Cartão");
+            modal.setScene(new Scene(root));
+            controller.setStage(modal);
+
+            // Buscar faturas do cartão ID 1 (ou você pode parametrizar depois)
+            List<Fatura> faturas = faturaService.listarFaturasPorCartao(1L);
+            controller.carregarFaturas(faturas);
+
+            modal.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Erro ao abrir faturas.", Alert.AlertType.ERROR);
+        }
     }
 
     // Tabela
