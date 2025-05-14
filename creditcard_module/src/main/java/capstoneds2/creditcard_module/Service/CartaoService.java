@@ -7,6 +7,7 @@ import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Repository.CartaoRepository;
 import capstoneds2.creditcard_module.Model.Enums.AcaoHistorico;
 import capstoneds2.creditcard_module.Repository.HistoricoCartaoRepository;
+import capstoneds2.creditcard_module.Service.Exceptions.CustomException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,11 @@ public class CartaoService {
 
     private final CartaoRepository cartaoRepository;
     private final HistoricoCartaoRepository historicoCartaoRepository;
-    public CartaoService(CartaoRepository cartaoRepository, HistoricoCartaoRepository historicoCartaoRepository) {
+    private final HistoricoCartaoService historicoCartaoService;
+    public CartaoService(CartaoRepository cartaoRepository, HistoricoCartaoRepository historicoCartaoRepository, HistoricoCartaoService historicoCartaoService) {
         this.cartaoRepository = cartaoRepository;
         this.historicoCartaoRepository = historicoCartaoRepository;
+        this.historicoCartaoService = historicoCartaoService;
     }
 
     public void gerarCartao(CartaoRegister cartaoRegister) {
@@ -45,10 +48,15 @@ public class CartaoService {
         cartao.setAprovacaoAutomatica(cartaoRegister.aprovacao_automatica());
         cartao.setEhAdicional(cartaoRegister.eh_adicional());
         cartao.setSenha(cartaoRegister.Senha());
-
-        cartao.setNome_impresso("JOAO DA SILVA"); // trocar ai para o nome real do cara quando pegar do UserID
+        cartao.setNome_impresso("JOAO DA SILVA"); // depois altere para o nome real via UserID: userid == account.getId()
 
         cartaoRepository.save(cartao);
+
+        historicoCartaoService.registrarHistorico(
+                cartao,
+                AcaoHistorico.solicitacao,
+                "Cartão gerado com sucesso"
+        );
     }
 
     private String gerarNumeroCartaoUnico() {
@@ -79,20 +87,35 @@ public class CartaoService {
     public Optional<Cartao> atualizarCartao(Long id, Cartao novosDados) {
         return cartaoRepository.findById(id).map(cartao -> {
             cartao.atualizarCartao(novosDados);
+            historicoCartaoService.registrarHistorico(
+                    cartao,
+                    AcaoHistorico.alteracao_status,
+                    "Cartão atualizado com sucesso"
+            );
             return cartaoRepository.save(cartao);
         });
     }
-
-    // DELETE
+// acho que nao vai precisar por enquanto
     public boolean deletarCartaoPorId(Long id) {
-        if (cartaoRepository.existsById(id)) {
+        Optional<Cartao> cartaoOptional = cartaoRepository.findById(id);
+
+        if (cartaoOptional.isPresent()) {
+            Cartao cartao = cartaoOptional.get();
+
+            historicoCartaoService.registrarHistorico(
+                    cartao,
+                    AcaoHistorico.bloqueio,
+                    "Cartão cancelado e removido do sistema."
+            );
+
             cartaoRepository.deleteById(id);
             return true;
         }
+
         return false;
     }
 
-    private static final float LIMITE_MAXIMO = 10000f;
+    private static final float LIMITE_MAXIMO = 10000f; // procurar um jeito de mudar isso aqui
 
     public String ajustarLimite(Long cartaoId, Float novoLimite) {
         Optional<Cartao> cartaoOpt = cartaoRepository.findById(cartaoId);
@@ -110,13 +133,11 @@ public class CartaoService {
             return "O limite não pode ser superior ao limite máximo permitido.";
         }
 
-        HistoricoCartao historico = new HistoricoCartao();
-        historico.setCartao(cartao);
-        historico.setAcao(AcaoHistorico.ajuste_limite);
-        historico.setDetalhes("Ajuste de limite para: " + novoLimite);
-        historico.setDataAlteracao(LocalDateTime.now());
-
-        historicoCartaoRepository.save(historico);
+        historicoCartaoService.registrarHistorico(
+                cartao,
+                AcaoHistorico.ajuste_limite,
+                "Ajuste de limite para: " + novoLimite
+        );
 
         cartao.setLimite_total(novoLimite);
         cartao.setLimite_disponivel(novoLimite);
@@ -125,13 +146,10 @@ public class CartaoService {
         return "Limite ajustado com sucesso!";
     }
 
-    public List<HistoricoCartao> obterHistoricoDeAjustes(Long cartaoId) {
-        return historicoCartaoRepository.findByCartao_Id(cartaoId);
-    }
     // BL-009
     public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new CustomException("Cartão não encontrado"));
 
         Boolean antigo = cartao.getAprovacaoAutomatica();
         if (antigo == modoAutomatico) return;
@@ -139,54 +157,55 @@ public class CartaoService {
         cartao.setAprovacaoAutomatica(modoAutomatico);
         cartaoRepository.save(cartao);
 
-        HistoricoCartao historico = new HistoricoCartao();
-        historico.setCartao(cartao);
-        historico.setAcao(AcaoHistorico.alteracao_modo_aprovacao);
-        historico.setDetalhes("Alterado de " + (antigo ? "AUTOMÁTICO" : "MANUAL") +
-                " para " + (modoAutomatico ? "AUTOMÁTICO" : "MANUAL"));
-        historico.setDataAlteracao(LocalDateTime.now());
-        historicoCartaoRepository.save(historico);
+        historicoCartaoService.registrarHistorico(
+                cartao,
+                AcaoHistorico.alteracao_modo_aprovacao,
+                "Alterado de " + (antigo ? "AUTOMÁTICO" : "MANUAL") +
+                        " para " + (modoAutomatico ? "AUTOMÁTICO" : "MANUAL")
+        );
     }
 
     // BL-010
     @Transactional
-    public List<Cartao> listarCartoesAtivos() {
+    public List<Cartao> listarCartoesAtivos() { // cliente ID
         return cartaoRepository.findByStatusCartao(StatusCartao.ATIVO);
     }
 
     @Transactional
-    public List<Cartao> listarCartoesBloqueados() {
+    public List<Cartao> listarCartoesBloqueados() { // Cliente Id
         return cartaoRepository.findByStatusCartao(StatusCartao.BLOQUEADO);
     }
 
-    @Transactional
-    public void bloquearCartao(Long cartaoId, String motivo) {
+    public void bloquearCartao(Long cartaoId, String senha, String motivo) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new CustomException("Cartão não encontrado."));
+
+        if (!cartao.getSenha().equals(senha)) {
+            throw new CustomException("Senha incorreta.");
+        }
 
         cartao.setStatusCartao(StatusCartao.BLOQUEADO);
-        cartao.adicionarHistorico(AcaoHistorico.bloqueio,
-                "Cartão bloqueado. Motivo: " + motivo);
-
         cartaoRepository.save(cartao);
-    }
 
+        historicoCartaoService.registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);
+    }
+/* Verificando
     @Transactional()
     public List<HistoricoCartao> consultarHistorico(Long cartaoId) {
         return historicoCartaoRepository.findByCartao_IdOrderByDataAlteracaoDesc(cartaoId);
     }
-
+ */
     @Transactional
     public void desbloquearCartao(Long cartaoId, String senha, String motivo) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new CustomException("Cartão não encontrado"));
 
         if (!cartao.getSenha().equals(senha)) {
-            throw new RuntimeException("Senha incorreta");
+            throw new CustomException("Senha incorreta");
         }
 
         if (cartao.getStatusCartao() != StatusCartao.BLOQUEADO) {
-            throw new RuntimeException("Cartão não está bloqueado temporariamente");
+            throw new CustomException("Cartão não está bloqueado temporariamente");
         }
 
         cartao.setStatusCartao(StatusCartao.ATIVO);
