@@ -1,5 +1,5 @@
 package capstoneds2.creditcard_module.Model.Enums;
 
 public enum StatusCartao {
-    ATIVO, BLOQUEADO, CANCELADO
+    ativo, bloqueado, cancelado
 }

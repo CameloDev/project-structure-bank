@@ -18,8 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static capstoneds2.creditcard_module.View.Controller.DialogsController.mostrarAlerta;
-import static capstoneds2.creditcard_module.View.Controller.DialogsController.solicitarEntradaViaDialog;
+import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
 
 @Controller
 public class DashboardController {
@@ -93,21 +92,12 @@ public class DashboardController {
             );
 
             cartaoService.gerarCartao(cartaoRegister);
-
+            carregarHistorico();
             mostrarAlerta("Cartão", "Cartão solicitado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro", "Não foi possível solicitar o cartão.", Alert.AlertType.ERROR);
         }
-    }
-    // Solicitar Cartao
-    private String solicitarSenhaViaDialog() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Confirmação");
-        dialog.setHeaderText("Digite a senha do novo cartão");
-        dialog.setContentText("Senha:");
-        Optional<String> resultado = dialog.showAndWait();
-        return resultado.orElseThrow(() -> new RuntimeException("Senha não informada"));
     }
     // Bloquear Cartao
     private void bloquearCartao() {
@@ -124,7 +114,11 @@ public class DashboardController {
                 return;
             }
             cartaoService.bloquearCartao(1L, senha, motivo);
+            /*
+             Onde eu setei um padrao eu vou listar por account ou fazer uma lista para que o cara liste qual o cartao
+            */
 
+            carregarHistorico();
             mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (CustomException e) {
             mostrarAlerta("Erro", e.getMessage(), Alert.AlertType.ERROR);
@@ -155,8 +149,12 @@ public class DashboardController {
     // Tabela
     private void carregarHistorico() {
         try {
+
             List<HistoricoCartao> historico = historicoCartaoService.listarTodosOsHistoricos();
+
             listaTransacoes.setAll(historico);
+
+            inicializarTabelaTransacoes();
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro", "Erro ao carregar histórico de transações.", Alert.AlertType.ERROR);
