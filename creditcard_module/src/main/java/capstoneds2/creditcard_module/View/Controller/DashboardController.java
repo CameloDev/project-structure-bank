@@ -124,6 +124,10 @@ public class DashboardController {
                 return;
             }
             cartaoService.bloquearCartao(1L, senha, motivo);
+            /*
+             Onde eu setei um padrao eu vou listar por account ou fazer uma lista para que o cara liste qual o cartao
+            */
+
             carregarHistorico();
             mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (CustomException e) {
