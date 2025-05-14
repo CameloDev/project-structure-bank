@@ -24,34 +24,21 @@ import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
 public class DashboardController {
 
     @FXML
-    private Button btnSolicitarCartao;
-
-    @FXML
-    private Button btnBloquearCartao;
-
-    @FXML
-    private Button btnSegundaVia;
-
-    @FXML
-    private Button btnVisualizarFatura;
-
-    @FXML
-    private Button btnAumentarLimite;
+    private Button btnSolicitarCartao, btnBloquearCartao, btnSegundaVia, btnVisualizarFatura, btnAumentarLimite;
 
     @FXML
     private TableView<HistoricoCartao> tabelaTransacoes;
 
     @FXML
-    private TableColumn<HistoricoCartao, String> colData;
-
-    @FXML
-    private TableColumn<HistoricoCartao, String> colDescricao;
-
-    @FXML
-    private TableColumn<HistoricoCartao, String> colParcelamento;
+    private TableColumn<HistoricoCartao, String> colData,  colDescricao, colParcelamento;
 
     @FXML
     private TableColumn<HistoricoCartao, Long> colCartaoId;
+
+    @FXML
+    private Label FaturaLabel,LimiteLabel, VencimentoLabel;
+
+
 
     private final HistoricoCartaoService historicoCartaoService;
     private final CartaoService cartaoService;

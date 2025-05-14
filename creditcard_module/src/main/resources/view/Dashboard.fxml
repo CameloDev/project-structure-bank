@@ -80,15 +80,15 @@
                         <VBox alignment="CENTER" spacing="15.0">
                            <HBox spacing="20.0">
                               <VBox styleClass="info-box">
-                                 <Label styleClass="info-title" text="Fatura atual" />
+                                 <Label fx:id="FaturaLabel" styleClass="info-title" text="Fatura atual" />
                                  <Label styleClass="info-value" text="R$ 35.000,00" />
                               </VBox>
                               <VBox styleClass="info-box">
-                                 <Label styleClass="info-title" text="Limite disponível" />
+                                 <Label fx:id="LimiteLabel" styleClass="info-title" text="Limite disponível" />
                                  <Label styleClass="info-value" text="R$ 50.000,00" />
                               </VBox>
                               <VBox styleClass="info-box">
-                                 <Label styleClass="info-title" text="Próximo vencimento" />
+                                 <Label fx:id="VencimentoLabel" styleClass="info-title" text="Próximo vencimento" />
                                  <Label styleClass="info-value" text="21/05/2025" />
                               </VBox>
                            </HBox>
