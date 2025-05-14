@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="capstoneds2.creditcard_module.View.Controller.DetalhesCartaoModalController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+
+    <Label text="Detalhes do Cartão" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Número:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label fx:id="lblNumero" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="CVV:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="lblCvv" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Data de Emissão:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="lblDataEmissao" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Data de Validade:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label fx:id="lblDataValidade" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Limite Total:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Label fx:id="lblLimiteTotal" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Limite Disponível:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <Label fx:id="lblLimiteDisponivel" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <Label text="Status:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <Label fx:id="lblStatus" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Button text="Fechar" onAction="#fechar"/>
+</VBox>
