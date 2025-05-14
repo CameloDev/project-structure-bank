@@ -2,6 +2,7 @@ package capstoneds2.creditcard_module.Service;
 
 import capstoneds2.creditcard_module.Model.Cartao;
 import capstoneds2.creditcard_module.Model.Enums.StatusCartao;
+import capstoneds2.creditcard_module.Model.Fatura;
 import capstoneds2.creditcard_module.Model.HistoricoCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Repository.CartaoRepository;
@@ -22,12 +23,13 @@ import java.util.Random;
 public class CartaoService {
 
     private final CartaoRepository cartaoRepository;
-    private final HistoricoCartaoRepository historicoCartaoRepository;
+
     private final HistoricoCartaoService historicoCartaoService;
-    public CartaoService(CartaoRepository cartaoRepository, HistoricoCartaoRepository historicoCartaoRepository, HistoricoCartaoService historicoCartaoService) {
+    private final FaturaService faturaService;
+    public CartaoService(CartaoRepository cartaoRepository, HistoricoCartaoService historicoCartaoService, FaturaService faturaService) {
         this.cartaoRepository = cartaoRepository;
-        this.historicoCartaoRepository = historicoCartaoRepository;
         this.historicoCartaoService = historicoCartaoService;
+        this.faturaService = faturaService;
     }
 
     public void gerarCartao(CartaoRegister cartaoRegister) {
@@ -48,7 +50,7 @@ public class CartaoService {
         cartao.setAprovacaoAutomatica(cartaoRegister.aprovacao_automatica());
         cartao.setEhAdicional(cartaoRegister.eh_adicional());
         cartao.setSenha(cartaoRegister.Senha());
-        cartao.setNome_impresso("JOAO DA SILVA"); // depois altere para o nome real via UserID: userid == account.getId()
+        cartao.setNome_impresso("JOAO DA SILVA"); // depois vou alterar para o nome real via UserID: userid == account.getId()
 
         cartaoRepository.save(cartao);
 
@@ -57,6 +59,7 @@ public class CartaoService {
                 AcaoHistorico.solicitacao,
                 "Cartão gerado com sucesso"
         );
+        faturaService.criarFaturaParaCartao(cartao.getId());
     }
 
     private String gerarNumeroCartaoUnico() {

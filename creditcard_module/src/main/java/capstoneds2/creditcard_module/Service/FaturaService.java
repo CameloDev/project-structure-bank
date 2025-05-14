@@ -5,6 +5,7 @@ import capstoneds2.creditcard_module.Model.Enums.StatusFatura;
 import capstoneds2.creditcard_module.Model.Fatura;
 import capstoneds2.creditcard_module.Repository.FaturaRepository;
 import capstoneds2.creditcard_module.Repository.CartaoRepository;
+import capstoneds2.creditcard_module.Service.Exceptions.CustomException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
@@ -23,9 +24,21 @@ public class FaturaService {
     }
 
     @Transactional
-    public Fatura criarFaturaParaCartao(Long cartaoId) {
+    public void criarFaturaParaCartao(Long cartaoId) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new CustomException("Cartão não encontrado"));
+
+        // Verifica se já existe uma fatura aberta para esse cartão no mês atual
+        LocalDate primeiroDiaDoMes = LocalDate.now().withDayOfMonth(1);
+        LocalDate ultimoDiaDoMes = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+
+        boolean faturaJaExiste = faturaRepository.existsByCartao_IdAndDataFechamentoBetween(
+                cartaoId, primeiroDiaDoMes, ultimoDiaDoMes
+        );
+
+        if (faturaJaExiste) {
+            return;
+        }
 
         Fatura fatura = new Fatura();
         fatura.setCartao(cartao);
@@ -35,7 +48,7 @@ public class FaturaService {
         fatura.setDataFechamento(hoje.with(TemporalAdjusters.lastDayOfMonth()));
         fatura.setDataVencimento(hoje.plusMonths(1).withDayOfMonth(10));
 
-        return faturaRepository.save(fatura);
+        faturaRepository.save(fatura);
     }
 
     @Transactional
