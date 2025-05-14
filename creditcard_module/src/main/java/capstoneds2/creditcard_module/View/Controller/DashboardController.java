@@ -61,6 +61,10 @@ public class DashboardController {
 
         inicializarTabelaTransacoes();
         carregarHistorico();
+
+        // FaturaLabel.setText(fatura);
+        // LimiteLabel.setText(limite);
+        // VencimentoLabel.setText(vencimento);
     }
 
     // Solicitar Cartao
