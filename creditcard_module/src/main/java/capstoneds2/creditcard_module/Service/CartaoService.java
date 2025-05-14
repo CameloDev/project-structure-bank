@@ -204,11 +204,11 @@ public class CartaoService {
             throw new CustomException("Senha incorreta");
         }
 
-        if (cartao.getStatusCartao() != StatusCartao.BLOQUEADO) {
+        if (cartao.getStatusCartao() != StatusCartao.bloqueado) {
             throw new CustomException("Cartão não está bloqueado temporariamente");
         }
 
-        cartao.setStatusCartao(StatusCartao.ATIVO);
+        cartao.setStatusCartao(StatusCartao.ativo);
 
 
         cartao.adicionarHistorico(AcaoHistorico.desbloqueio,
