@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox spacing="10.0" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
       fx:controller="capstoneds2.creditcard_module.View.Controller.FaturaModalController">
     <Label text="Faturas do Cartão" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-
     <TableView fx:id="tabelaFaturas" prefWidth="600.0">
         <columns>
             <TableColumn fx:id="colDataVencimento" text="Vencimento" prefWidth="120.0"/>
@@ -23,7 +13,6 @@
             <TableColumn fx:id="colStatus" text="Status" prefWidth="120.0"/>
         </columns>
     </TableView>
-
     <Button text="Fechar" onAction="#fechar"/>
 </VBox>
 

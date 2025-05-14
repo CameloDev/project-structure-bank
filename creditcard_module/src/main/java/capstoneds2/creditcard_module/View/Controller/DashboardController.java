@@ -73,6 +73,10 @@ public class DashboardController {
             abrirModalDetalhesCartao();
 
         });
+        btnVisualizarFatura.setOnAction(event ->{
+            visualizarFatura();
+
+        } );
 
         inicializarTabelaTransacoes();
         carregarHistorico();
@@ -198,9 +202,8 @@ public class DashboardController {
             modal.setTitle("Faturas do Cartão");
             modal.setScene(new Scene(root));
             controller.setStage(modal);
-
-            // Buscar faturas do cartão ID 1 (ou você pode parametrizar depois)
-            List<Fatura> faturas = faturaService.listarFaturasPorCartao(1L);
+            
+            List<Fatura> faturas = faturaService.listarFaturasPorCartao(3L); // vou fazer por id do cliente
             controller.carregarFaturas(faturas);
 
             modal.showAndWait();
