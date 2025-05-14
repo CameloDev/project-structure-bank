@@ -18,6 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import static capstoneds2.creditcard_module.View.Controller.DialogsController.mostrarAlerta;
+import static capstoneds2.creditcard_module.View.Controller.DialogsController.solicitarEntradaViaDialog;
+
 @Controller
 public class DashboardController {
 
@@ -129,26 +132,6 @@ public class DashboardController {
             e.printStackTrace();
             mostrarAlerta("Erro inesperado", "Ocorreu um erro ao bloquear o cartão.", Alert.AlertType.ERROR);
         }
-    }
-
-    // Global -- irei colocar em outra class
-    private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle(titulo);
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensagem);
-        alerta.showAndWait();
-    }
-
-    //Global -- irei colocar em outra class
-    private String solicitarEntradaViaDialog(String titulo, String mensagem) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(titulo);
-        dialog.setHeaderText(mensagem);
-        dialog.setContentText(null);
-
-        Optional<String> resultado = dialog.showAndWait();
-        return resultado.orElse(null);
     }
 
     // Tabela
