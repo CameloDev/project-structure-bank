@@ -117,6 +117,16 @@ public class DashboardController {
         }
     }
 
+    // Listar Cartao
+    public void ListarCartao(){
+
+    }
+
+    // Visualizar Fatura
+    public void visualizarFatura(){
+
+    }
+
     // Tabela
     private void inicializarTabelaTransacoes() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
