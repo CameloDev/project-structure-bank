@@ -109,7 +109,6 @@ public class DashboardController {
     // Bloquear Cartao
     private void bloquearCartao() {
         try {
-            // Solicita senha
             String senha = solicitarEntradaViaDialog("Confirmação de senha", "Digite a senha do cartão:");
             if (senha == null || senha.isBlank()) {
                 mostrarAlerta("Erro", "Senha não informada.", Alert.AlertType.WARNING);
