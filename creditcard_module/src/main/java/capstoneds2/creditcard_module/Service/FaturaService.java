@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FaturaService {
@@ -43,6 +44,7 @@ public class FaturaService {
         Fatura fatura = new Fatura();
         fatura.setCartao(cartao);
         fatura.setStatusFatura(StatusFatura.aberta);
+        fatura.setValor_total(0.0f);
 
         LocalDate hoje = LocalDate.now();
         fatura.setDataFechamento(hoje.with(TemporalAdjusters.lastDayOfMonth()));
@@ -51,14 +53,14 @@ public class FaturaService {
         faturaRepository.save(fatura);
     }
 
-    @Transactional
+    @Transactional // TRANSACTION
     public void adicionarValorAFatura(Long faturaId, Double valor) {
         if (valor <= 0) {
             throw new IllegalArgumentException("Valor deve ser positivo");
         }
 
         Fatura fatura = faturaRepository.findById(faturaId)
-                .orElseThrow(() -> new RuntimeException("Fatura não encontrada"));
+                .orElseThrow(() -> new CustomException("Fatura não encontrada"));
 
         fatura.setValor_total((float) (fatura.getValor_total() + valor));
 
@@ -103,12 +105,13 @@ public class FaturaService {
                 StatusFatura.paga
         );
     }
-
     public Double calcularTotalFaturaAtual(Long cartaoId) {
         return faturaRepository.findByCartao_IdAndStatusFatura(
                         cartaoId, StatusFatura.aberta
                 ).stream()
-                .mapToDouble(Fatura::getValor_total)
+                .map(Fatura::getValor_total)
+                .filter(Objects::nonNull)
+                .mapToDouble(Float::doubleValue)
                 .sum();
     }
 }

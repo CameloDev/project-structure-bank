@@ -23,8 +23,10 @@ import javafx.stage.Stage;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
@@ -73,7 +75,7 @@ public class DashboardController {
             abrirModalDetalhesCartao();
 
         });
-        btnVisualizarFatura.setOnAction(event ->{
+        btnVisualizarFatura.setOnAction(event -> {
             visualizarFatura();
 
         } );
@@ -81,6 +83,7 @@ public class DashboardController {
         inicializarTabelaTransacoes();
         carregarHistorico();
         listarCartao();
+        atualizarValorTotalFatura(10L);
     }
 
     // Solicitar Cartao
@@ -118,7 +121,7 @@ public class DashboardController {
                 mostrarAlerta("Erro", "Motivo do bloqueio não informado.", Alert.AlertType.WARNING);
                 return;
             }
-            cartaoService.bloquearCartao(1L, senha, motivo);
+            cartaoService.bloquearCartao(10L, senha, motivo);
             /*
              Onde eu setei um padrao eu vou listar por account ou fazer uma lista para que o cara liste qual o cartao
             */
@@ -137,9 +140,9 @@ public class DashboardController {
     public void listarCartao() {
         List<Cartao> cartoes = cartaoService.listarCartoesAtivos();
 
-        //  irei usar ClienteID entao é apenas teste para manter uma base
+        //  irei usar ClienteID entao é apenas teste para manter uma base -> Teste para verificar se o clienteId esta sendo utilizado / gerado
         Optional<Cartao> cartaoOptional = cartoes.stream()
-                .filter(c -> c.getId() == 3L)
+                .filter(c -> c.getId() == 10L)
                 .findFirst();
 
         if (cartaoOptional.isPresent()) {
@@ -174,7 +177,7 @@ public class DashboardController {
             controller.setStage(modal);
 
             Optional<Cartao> cartaoOptional = cartaoService.listarCartoesAtivos().stream()
-                    .filter(c -> c.getId() == 3L) // mudar depois para o clienteId e ele seleciona o cartao que ele quer :)
+                    .filter(c -> c.getId() == 10L) // mudar depois para o clienteId e ele seleciona o cartao que ele quer :)
                     .findFirst();
 
             if (cartaoOptional.isPresent()) {
@@ -203,8 +206,10 @@ public class DashboardController {
             modal.setScene(new Scene(root));
             controller.setStage(modal);
             
-            List<Fatura> faturas = faturaService.listarFaturasPorCartao(3L); // vou fazer por id do cliente
+            List<Fatura> faturas = faturaService.listarFaturasPorCartao(10L); // vou fazer por id do cliente
             controller.carregarFaturas(faturas);
+
+
 
             modal.showAndWait();
         } catch (IOException e) {
@@ -212,7 +217,21 @@ public class DashboardController {
             mostrarAlerta("Erro", "Erro ao abrir faturas.", Alert.AlertType.ERROR);
         }
     }
+    // Calcular Fatura
 
+    public void atualizarValorTotalFatura(Long cartaoId) {
+        try {
+            Double total = faturaService.calcularTotalFaturaAtual(cartaoId);
+
+            NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+            String valorFormatado = formatoMoeda.format(total);
+
+            FaturaLabel.setText(valorFormatado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Não foi possível calcular o total da fatura.", Alert.AlertType.ERROR);
+        }
+    }
     // Tabela
     private void inicializarTabelaTransacoes() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
