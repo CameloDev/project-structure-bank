@@ -76,6 +76,7 @@ public class CartaoService {
 
         return numero;
     }
+
     // READ (por ID)
     public Optional<Cartao> buscarCartaoPorId(Long id) {
         return cartaoRepository.findById(id);
