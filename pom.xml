@@ -8,7 +8,7 @@
     <artifactId>ds2</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>JalaBank - Projeto Pai</name>
+    <name>Banco - Projeto Pai</name>
 
     <modules>
         <module>account_module</module>
