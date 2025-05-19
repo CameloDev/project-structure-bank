@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +37,9 @@ class CartaoServiceTest {
     @InjectMocks
     private CartaoService cartaoService;
 
+    /*
+    Gerar Cartao
+ */
     @Test
     void deveGerarCartaoCorretamente() {
         // Arrange
@@ -76,7 +80,9 @@ class CartaoServiceTest {
 
         verify(faturaService).criarFaturaParaCartao(anyLong());
     }
-
+    /*
+    Bloquear Cartao
+     */
     @Test
     void deveBloquearCartaoComSenhaCorreta() {
         // Arrange
@@ -99,6 +105,9 @@ class CartaoServiceTest {
         verify(cartaoRepository).save(cartao);
         verify(historicoCartaoService).registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);
     }
+    /*
+    Bloquear Cartao
+     */
     @Test
     void deveLancarExcecaoQuandoCartaoNaoEncontrado() {
         // Arrange
@@ -117,7 +126,9 @@ class CartaoServiceTest {
         verify(cartaoRepository, never()).save(any());
         verify(historicoCartaoService, never()).registrarHistorico(any(), any(), any());
     }
-
+    /*
+    Bloquear Cartao
+     */
     @Test
     void deveLancarExcecaoQuandoSenhaIncorreta() {
         // Arrange
@@ -141,6 +152,30 @@ class CartaoServiceTest {
         assertEquals("Senha incorreta.", ex.getMessage());
         verify(cartaoRepository, never()).save(any());
         verify(historicoCartaoService, never()).registrarHistorico(any(), any(), any());
+    }
+
+    /*
+    Listar Cartoes ativos
+     */
+
+    @Test
+    void deveListarApenasCartoesAtivos() {
+        // Arrange
+        Cartao cartao1 = new Cartao();
+        cartao1.setStatusCartao(StatusCartao.ativo);
+        Cartao cartao2 = new Cartao();
+        cartao2.setStatusCartao(StatusCartao.ativo);
+
+        List<Cartao> cartoesAtivos = List.of(cartao1, cartao2);
+        when(cartaoRepository.findByStatusCartao(StatusCartao.ativo)).thenReturn(cartoesAtivos);
+
+        // Act
+        List<Cartao> resultado = cartaoService.listarCartoesAtivos();
+
+        // Assert
+        assertEquals(2, resultado.size());
+        assertTrue(resultado.stream().allMatch(c -> c.getStatusCartao() == StatusCartao.ativo));
+        verify(cartaoRepository).findByStatusCartao(StatusCartao.ativo);
     }
 
 
