@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -74,6 +76,32 @@ class CartaoServiceTest {
 
         verify(faturaService).criarFaturaParaCartao(anyLong());
     }
+
+    @Test
+    void deveBloquearCartaoComSenhaCorreta() {
+        // Arrange
+        Long cartaoId = 1L;
+        String senha = "1234";
+        String motivo = "Solicitação do usuário";
+
+        Cartao cartao = new Cartao();
+        cartao.setId(cartaoId);
+        cartao.setSenha(senha);
+        cartao.setStatusCartao(StatusCartao.ativo);
+
+        when(cartaoRepository.findById(cartaoId)).thenReturn(Optional.of(cartao));
+
+        // Act
+        cartaoService.bloquearCartao(cartaoId, senha, motivo);
+
+        // Assert
+        assertEquals(StatusCartao.bloqueado, cartao.getStatusCartao());
+        verify(cartaoRepository).save(cartao);
+        verify(historicoCartaoService).registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);
+    }
+
+
+
 
 
 }
