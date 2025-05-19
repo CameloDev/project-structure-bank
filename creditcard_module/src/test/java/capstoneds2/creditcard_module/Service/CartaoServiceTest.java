@@ -5,6 +5,7 @@ import capstoneds2.creditcard_module.Model.Enums.AcaoHistorico;
 import capstoneds2.creditcard_module.Model.Enums.StatusCartao;
 import capstoneds2.creditcard_module.Model.Register.CartaoRegister;
 import capstoneds2.creditcard_module.Repository.CartaoRepository;
+import capstoneds2.creditcard_module.Service.Exceptions.CustomException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -15,8 +16,7 @@ import capstoneds2.creditcard_module.Model.Enums.BandeiraCartao;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -99,7 +99,49 @@ class CartaoServiceTest {
         verify(cartaoRepository).save(cartao);
         verify(historicoCartaoService).registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);
     }
+    @Test
+    void deveLancarExcecaoQuandoCartaoNaoEncontrado() {
+        // Arrange
+        Long cartaoId = 1L;
+        String senha = "1234";
+        String motivo = "Motivo qualquer";
 
+        when(cartaoRepository.findById(cartaoId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        CustomException ex = assertThrows(CustomException.class, () ->
+                cartaoService.bloquearCartao(cartaoId, senha, motivo)
+        );
+
+        assertEquals("Cartão não encontrado.", ex.getMessage());
+        verify(cartaoRepository, never()).save(any());
+        verify(historicoCartaoService, never()).registrarHistorico(any(), any(), any());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoSenhaIncorreta() {
+        // Arrange
+        Long cartaoId = 1L;
+        String senhaCorreta = "1234";
+        String senhaIncorreta = "0000";
+        String motivo = "Senha errada";
+
+        Cartao cartao = new Cartao();
+        cartao.setId(cartaoId);
+        cartao.setSenha(senhaCorreta);
+        cartao.setStatusCartao(StatusCartao.ativo);
+
+        when(cartaoRepository.findById(cartaoId)).thenReturn(Optional.of(cartao));
+
+        // Act & Assert
+        CustomException ex = assertThrows(CustomException.class, () ->
+                cartaoService.bloquearCartao(cartaoId, senhaIncorreta, motivo)
+        );
+
+        assertEquals("Senha incorreta.", ex.getMessage());
+        verify(cartaoRepository, never()).save(any());
+        verify(historicoCartaoService, never()).registrarHistorico(any(), any(), any());
+    }
 
 
 
