@@ -24,7 +24,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: card_dev
         options: >-
-          --health-cmd="mysqladmin ping -uroot -p root --silent"
+          --health-cmd="mysqladmin ping -uroot -proot --silent"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
