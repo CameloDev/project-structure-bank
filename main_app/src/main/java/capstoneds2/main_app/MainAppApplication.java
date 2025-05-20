@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.Arrays;
+
 @SpringBootApplication
 @ComponentScan(basePackages = {
         "capstoneds2.account_module",
@@ -20,19 +22,25 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "capstoneds2.commons_module",
         "capstoneds2.main_app"
 })
+@Import(CreditCardModuleConfig.class)
 @EnableTransactionManagement
 public class MainAppApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainAppApplication.class, args);
 
-        String activeModule = context.getEnvironment().getProperty("app.module.active", "none");
+        String[] activeProfiles = context.getEnvironment().getActiveProfiles();
 
-        if ("creditcard".equals(activeModule)) {
+        boolean isTestProfile = Arrays.asList(activeProfiles).contains("test");
 
-            CreditCardJavaFxApp.setParentContext(context);
+        if (!isTestProfile) {
+            String activeModule = context.getEnvironment().getProperty("app.module.active", "none");
 
-            Application.launch(CreditCardJavaFxApp.class, args);
+            if ("creditcard".equals(activeModule)) {
+                CreditCardJavaFxApp.setParentContext(context);
+                Application.launch(CreditCardJavaFxApp.class, args);
+            }
         }
     }
+
 }
