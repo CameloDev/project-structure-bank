@@ -8,6 +8,7 @@ public record CartaoRegister(
         @NotNull Boolean aprovacao_automatica,
         Boolean eh_adicional,
         BandeiraCartao bandeiraCartao,
+        @NotNull
         String Senha
         // futuramente: Long clienteId
 ) {
