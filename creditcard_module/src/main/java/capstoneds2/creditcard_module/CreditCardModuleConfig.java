@@ -30,9 +30,15 @@ public class CreditCardModuleConfig {
     @Bean(name = "creditCardDataSource")
     public DataSource creditCardDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://mysql:3306/card_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC");
-        config.setUsername("root");
-        config.setPassword("root");
+        String host = System.getenv().getOrDefault("DB_HOST", "localhost");
+        String port = System.getenv().getOrDefault("DB_PORT", "3306");
+        String db   = System.getenv().getOrDefault("DB_NAME", "card_dev");
+        String user = System.getenv().getOrDefault("DB_USER", "root");
+        String pass = System.getenv().getOrDefault("DB_PASS", "root");
+
+        config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + db + "?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC");
+        config.setUsername(user);
+        config.setPassword(pass);
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setPoolName("CreditCardHikariPool");
         config.setMaximumPoolSize(10);
@@ -42,7 +48,6 @@ public class CreditCardModuleConfig {
         config.setMaxLifetime(1800000);
         return new HikariDataSource(config);
     }
-
     @Primary
     @Bean(name = "creditCardEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean creditCardEntityManagerFactory(
