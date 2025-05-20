@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
 public class CreditCardJavaFxApp extends Application {
 
     private static ConfigurableApplicationContext parentContext;
