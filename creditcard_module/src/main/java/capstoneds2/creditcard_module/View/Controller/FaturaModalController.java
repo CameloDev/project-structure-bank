@@ -7,12 +7,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Controller
+@Component
 public class FaturaModalController {
 
     @FXML

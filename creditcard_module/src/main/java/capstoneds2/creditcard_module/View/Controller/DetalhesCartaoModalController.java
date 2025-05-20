@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
-
-@Controller
+@Component
 public class DetalhesCartaoModalController {
 
     @FXML

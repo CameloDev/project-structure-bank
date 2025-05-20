@@ -2,8 +2,10 @@ package capstoneds2.creditcard_module.View.Controller;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
-import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+@Component
 public class DialogsUtils {
     // Classe utilitária para usar ai
     public static String solicitarEntradaViaDialog(String titulo, String mensagem) {
