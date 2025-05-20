@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "capstoneds2.commons_module",
         "capstoneds2.main_app"
 })
-@Import(CreditCardModuleConfig.class)
 @EnableTransactionManagement
 public class MainAppApplication {
 
