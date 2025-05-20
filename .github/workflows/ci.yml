@@ -6,42 +6,11 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  DB_HOST: mysql
-  DB_PORT: 3306
-  DB_NAME: card_dev
-  DB_USER: root
-  DB_PASS: root
-
 jobs:
-  build-and-run:
+  ci:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: card_dev
-        options: >-
-          --health-cmd="mysqladmin ping -uroot -proot --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
-      - name: Aguardar MySQL subir (com autenticação)
-        run: |
-          echo "Aguardando MySQL iniciar..."
-          for i in {1..30}; do
-            if mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" --silent; then
-              echo "✅ MySQL está pronto!"
-              break
-            fi
-            echo "⏳ Aguardando... ($i)"
-            sleep 2
-          done
-
       - name: Checkout código
         uses: actions/checkout@v3
 
@@ -59,16 +28,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Maven Clean Install na raiz
-        run: mvn clean install
+      # 1. Análise Estática com Checkstyle (ou outra ferramenta configurada no pom.xml)
+      - name: Rodar análise estática (Checkstyle)
+        run: mvn checkstyle:check
 
-      - name: Maven Test na raiz
-        run: mvn test
+      # 2. Rodar testes unitários + gerar cobertura com JaCoCo
+      - name: Rodar testes com cobertura
+        run: mvn test jacoco:report
 
-      - name: Maven Clean Install no main_app
-        working-directory: ./main_app
-        run: mvn clean install
+      # 3. Publicar relatório de cobertura no GitHub (HTML export opcional)
+      - name: Publicar cobertura no summary (JaCoCo)
+        if: always()
+        run: |
+          echo "Cobertura de código (linha por linha):"
+          grep -A 10 "<line" target/site/jacoco/index.html || echo "Relatório não encontrado."
 
-      - name: Rodar aplicação Spring Boot no main_app
-        working-directory: ./main_app
-        run: mvn spring-boot:run
+      # 4. Build do projeto (gera os artefatos .jar/.war)
+      - name: Build do projeto (artefato)
+        run: mvn clean install -DskipTests
+
+      # (Opcional) Upload dos artefatos
+      - name: Upload artefato gerado
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-jar
+          path: target/*.jar
