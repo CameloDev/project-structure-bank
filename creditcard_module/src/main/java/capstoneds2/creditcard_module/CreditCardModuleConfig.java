@@ -30,7 +30,7 @@ public class CreditCardModuleConfig {
     @Bean(name = "creditCardDataSource")
     public DataSource creditCardDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/card_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC");
+        config.setJdbcUrl("jdbc:mysql://mysql:3306/card_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC");
         config.setUsername("root");
         config.setPassword("root");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
