@@ -31,6 +31,18 @@ jobs:
           --health-retries=3
 
     steps:
+      - name: Aguardar MySQL subir
+        run: |
+          echo "Aguardando MySQL iniciar..."
+          for i in {1..30}; do
+            if mysqladmin ping -h"mysql" --silent; then
+              echo "MySQL está pronto!"
+              break
+            fi
+            echo "Aguardando... ($i)"
+            sleep 2
+          done
+
       - name: Checkout código
         uses: actions/checkout@v3
 
