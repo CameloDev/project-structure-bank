@@ -5,6 +5,13 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+env:
+  DB_HOST: mysql
+  DB_PORT: 3306
+  DB_NAME: ${{ secrets.DBNAME }}
+  DB_USER: root
+  DB_PASS: ${{ secrets.PASSWORD }}
+
 
 jobs:
   build-and-run:
