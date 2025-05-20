@@ -28,26 +28,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 1. Análise Estática com Checkstyle (ou outra ferramenta configurada no pom.xml)
       - name: Rodar análise estática (Checkstyle)
         run: mvn checkstyle:check
 
-      # 2. Rodar testes unitários + gerar cobertura com JaCoCo
       - name: Rodar testes com cobertura
         run: mvn test jacoco:report
 
-      # 3. Publicar relatório de cobertura no GitHub (HTML export opcional)
       - name: Publicar cobertura no summary (JaCoCo)
         if: always()
         run: |
           echo "Cobertura de código (linha por linha):"
           grep -A 10 "<line" target/site/jacoco/index.html || echo "Relatório não encontrado."
 
-      # 4. Build do projeto (gera os artefatos .jar/.war)
       - name: Build do projeto (artefato)
         run: mvn clean install -DskipTests
 
-      # (Opcional) Upload dos artefatos
       - name: Upload artefato gerado
         uses: actions/upload-artifact@v4
         with:
