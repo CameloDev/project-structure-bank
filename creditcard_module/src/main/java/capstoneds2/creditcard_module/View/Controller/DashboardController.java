@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ import java.util.Optional;
 
 import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
 
-@Controller
+@Component
 public class DashboardController {
 
     @FXML
