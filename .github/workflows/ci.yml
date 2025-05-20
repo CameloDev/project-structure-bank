@@ -28,17 +28,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Executar análise estática (Checkstyle)
-        run: mvn checkstyle:check
-
-      - name: Executar testes unitários
-        run: mvn test
+      - name: Executar build completo (multi-módulo) com testes e análise
+        run: mvn clean verify
 
       - name: Gerar relatório de cobertura com JaCoCo
-        run: mvn jacoco:prepare-agent test jacoco:report
+        run: mvn jacoco:report
 
-      - name: Construir artefato
-        run: mvn clean package
+      - name: Construir artefatos (package)
+        run: mvn package
 
       - name: Publicar artefato do main_app
         uses: actions/upload-artifact@v4
