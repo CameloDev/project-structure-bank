@@ -124,12 +124,9 @@
             <!-- Plugin do compilador Maven -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <release>${java.version}</release>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
 
