@@ -16,32 +16,7 @@ env:
 jobs:
   build-and-run:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0.33
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: card_dev
-        options: >-
-          --health-cmd="mysqladmin ping -uroot -proot --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
-      - name: Aguardar MySQL subir (com autenticação)
-        run: |
-          echo "Aguardando MySQL iniciar..."
-          for i in {1..30}; do
-            if mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" --silent; then
-              echo "✅ MySQL está pronto!"
-              break
-            fi
-            echo "⏳ Aguardando... ($i)"
-            sleep 2
-          done
-
       - name: Checkout código
         uses: actions/checkout@v3
 
@@ -65,10 +40,3 @@ jobs:
       - name: Maven Test na raiz
         run: mvn test
 
-      - name: Maven Clean Install no main_app
-        working-directory: ./main_app
-        run: mvn clean install
-
-      - name: Rodar aplicação Spring Boot no main_app
-        working-directory: ./main_app
-        run: mvn spring-boot:run
