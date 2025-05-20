@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -27,6 +28,7 @@ import java.util.Properties;
 public class CreditCardModuleConfig {
 
     @Primary
+    @Profile("!test")
     @Bean(name = "creditCardDataSource")
     public DataSource creditCardDataSource() {
         HikariConfig config = new HikariConfig();
@@ -49,6 +51,7 @@ public class CreditCardModuleConfig {
         return new HikariDataSource(config);
     }
     @Primary
+    @Profile("!test")
     @Bean(name = "creditCardEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean creditCardEntityManagerFactory(
             @Qualifier("creditCardDataSource") DataSource dataSource) {
@@ -76,6 +79,7 @@ public class CreditCardModuleConfig {
     }
 
     @Primary
+    @Profile("!test")
     @Bean(name = "creditCardTransactionManager")
     public PlatformTransactionManager creditCardTransactionManager(
             @Qualifier("creditCardEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
