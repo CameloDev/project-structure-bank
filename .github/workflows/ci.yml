@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+
 env:
   DB_HOST: mysql
   DB_PORT: 3306
@@ -12,10 +13,10 @@ env:
   DB_USER: root
   DB_PASS: ${{ secrets.PASSWORD }}
 
-
 jobs:
   build-and-run:
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:8
@@ -25,28 +26,28 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping --silent"
+          --health-cmd="mysqladmin ping -uroot -p${{ secrets.PASSWORD }} --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
     steps:
-      - name: Aguardar MySQL subir
+      - name: Aguardar MySQL subir (com autenticação)
         run: |
           echo "Aguardando MySQL iniciar..."
           for i in {1..30}; do
-            if mysqladmin ping -h"mysql" --silent; then
-              echo "MySQL está pronto!"
+            if mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" --silent; then
+              echo "✅ MySQL está pronto!"
               break
             fi
-            echo "Aguardando... ($i)"
+            echo "⏳ Aguardando... ($i)"
             sleep 2
           done
 
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Setup Java 21
+      - name: Setup Java 22
         uses: actions/setup-java@v3
         with:
           java-version: '22'
