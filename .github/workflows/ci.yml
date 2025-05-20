@@ -30,18 +30,22 @@ jobs:
 
       - name: Executar análise estática (Checkstyle)
         run: mvn checkstyle:check
+        working-directory: ./main_app
 
       - name: Executar testes unitários
         run: mvn test
+        working-directory: ./main_app
 
       - name: Gerar relatório de cobertura com JaCoCo
         run: mvn jacoco:prepare-agent test jacoco:report
+        working-directory: ./main_app
 
       - name: Construir artefato
         run: mvn clean package
+        working-directory: ./main_app
 
       - name: Publicar artefato
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: springboot-app
-          path: target/*.jar
+          path: main_app/target/*.jar
