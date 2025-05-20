@@ -51,5 +51,5 @@ jobs:
       - name: Upload artefato gerado
         uses: actions/upload-artifact@v4
         with:
-          name: app-jar
-          path: target/*.jar
+          name: app-jars
+          path: '**/target/*.jar'
