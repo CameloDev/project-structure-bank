@@ -9,9 +9,9 @@ on:
 env:
   DB_HOST: mysql
   DB_PORT: 3306
-  DB_NAME: ${{ secrets.DBNAME }}
+  DB_NAME: card_dev
   DB_USER: root
-  DB_PASS: ${{ secrets.PASSWORD }}
+  DB_PASS: root
 
 jobs:
   build-and-run:
@@ -21,10 +21,10 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.PASSWORD }}
-          MYSQL_DATABASE:  ${{ secrets.DBNAME }}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE:  card_dev
           MYSQL_USER: root
-          MYSQL_PASSWORD: ${{ secrets.PASSWORD }}
+          MYSQL_PASSWORD: root
         ports:
           - 3306:3306
         options: >-
