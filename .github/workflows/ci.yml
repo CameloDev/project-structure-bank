@@ -7,14 +7,14 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build-and-test:
+  build-and-run:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Setup Java
+      - name: Setup Java 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
@@ -28,17 +28,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Executar build completo (multi-módulo) com testes e análise
-        run: mvn clean verify
+      - name: Maven Clean Install na raiz
+        run: mvn clean install
 
-      - name: Gerar relatório de cobertura com JaCoCo
-        run: mvn jacoco:report
+      - name: Maven Test na raiz
+        run: mvn test
 
-      - name: Construir artefatos (package)
-        run: mvn package
+      - name: Maven Clean Install no main_app
+        working-directory: ./main_app
+        run: mvn clean install
 
-      - name: Publicar artefato do main_app
-        uses: actions/upload-artifact@v4
-        with:
-          name: springboot-app
-          path: main_app/target/*.jar
+      - name: Rodar aplicação Spring Boot no main_app
+        working-directory: ./main_app
+        run: mvn spring-boot:run
