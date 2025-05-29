@@ -138,7 +138,6 @@ public class DashboardController {
     // Bloquear Cartao
     private void bloquearCartao() {
         try {
-            // Buscar cartões ativos para escolha
             List<Cartao> cartoesAtivos = cartaoService.listarCartoesAtivos();
             if (cartoesAtivos.isEmpty()) {
                 mostrarAlerta("Nenhum cartão ativo", "Você não possui cartões ativos para bloquear.", Alert.AlertType.INFORMATION);
@@ -151,12 +150,11 @@ public class DashboardController {
             dialog.setContentText("Cartão:");
             Optional<Cartao> resultado = dialog.showAndWait();
             if (resultado.isEmpty()) {
-                return; // Usuário cancelou a seleção
+                return;
             }
 
             Cartao selecionado = resultado.get();
 
-            // Validação da senha com loop e regex para 6 dígitos numéricos
             String senha;
             while (true) {
                 senha = solicitarEntradaViaDialog("Confirmação de senha", "Digite a senha do cartão:");
