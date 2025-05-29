@@ -104,4 +104,11 @@ public class Cartao {
         this.historicos.add(historico);
     }
 
+    @Override
+    public String toString() {
+        return "Cartão final " + numero.substring(numero.length() - 4) +
+                " (Limite: R$" + limite_total + ")";
+    }
+
+
 }

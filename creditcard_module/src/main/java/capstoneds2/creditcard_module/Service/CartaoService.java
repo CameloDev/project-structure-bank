@@ -141,7 +141,7 @@ public class CartaoService {
         return "Limite ajustado com sucesso!";
     }
 
-    // BL-009
+    // BL-009 vou add em um botao jaja
     public void alterarModoAprovacao(Long cartaoId, boolean modoAutomatico) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new CustomException("Cartão não encontrado"));
@@ -179,6 +179,12 @@ public class CartaoService {
         historicoCartaoService.registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);
     }
 
+
+    @Transactional
+    public List<Cartao> listarCartoesBloqueados() {
+        return cartaoRepository.findByStatusCartao(StatusCartao.bloqueado);
+    }
+
     @Transactional
     public void desbloquearCartao(Long cartaoId, String senha, String motivo) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
@@ -201,13 +207,4 @@ public class CartaoService {
         cartaoRepository.save(cartao);
     }
 
-    @Transactional
-    public Cartao buscarPorId(Long id) {
-        return cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
-    }
-
-    /*
-    Vou add depois o BL-013, vou dormir
-     */
 }
