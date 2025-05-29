@@ -86,6 +86,10 @@ public class DashboardController {
         btnSegundaVia.setOnAction(event ->{
             solicitarCartaoAdicional();
         });
+        btnDesbloquearCartao.setOnAction(event -> {
+            desbloquearCartao();
+        });
+
 
 
         inicializarTabelaTransacoes();
@@ -136,10 +140,6 @@ public class DashboardController {
                 return;
             }
             cartaoService.bloquearCartao(10L, senha, motivo);
-            /*
-             Onde eu setei um padrao eu vou listar por account ou fazer uma lista para que o cara liste qual o cartao
-            */
-
             carregarHistorico();
             mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (CustomException e) {
@@ -152,33 +152,29 @@ public class DashboardController {
     @FXML
     private void desbloquearCartao() {
         try {
-            // 1. Buscar cartões bloqueados
             List<Cartao> cartoesBloqueados = cartaoService.listarCartoesBloqueados();
             if (cartoesBloqueados.isEmpty()) {
                 mostrarAlerta("Nenhum cartão bloqueado", "Você não possui cartões bloqueados.", Alert.AlertType.INFORMATION);
                 return;
             }
 
-            // 2. Selecionar cartão bloqueado
             ChoiceDialog<Cartao> dialog = new ChoiceDialog<>(cartoesBloqueados.get(0), cartoesBloqueados);
             dialog.setTitle("Desbloquear Cartão");
             dialog.setHeaderText("Selecione um cartão bloqueado:");
             dialog.setContentText("Cartão:");
             Optional<Cartao> resultado = dialog.showAndWait();
             if (resultado.isEmpty()) {
-                return; // Cancelado
+                return;
             }
 
             Cartao selecionado = resultado.get();
 
-            // 3. Solicitar senha
-            String senha = solicitarSenhaViaDialog(); // Reaproveite esse método se ele existir
+            String senha = solicitarSenhaViaDialog();
             if (senha == null || senha.isBlank()) {
                 mostrarAlerta("Cancelado", "Operação cancelada: senha não informada.", Alert.AlertType.INFORMATION);
                 return;
             }
 
-            // 4. Solicitar motivo
             TextInputDialog motivoDialog = new TextInputDialog();
             motivoDialog.setTitle("Motivo do Desbloqueio");
             motivoDialog.setHeaderText("Informe o motivo para o desbloqueio:");
@@ -191,7 +187,6 @@ public class DashboardController {
 
             String motivo = motivoOpt.get();
 
-            // 5. Chamar serviço para desbloquear
             cartaoService.desbloquearCartao(selecionado.getId(), senha, motivo);
             mostrarAlerta("Desbloqueado", "Cartão desbloqueado com sucesso!", Alert.AlertType.INFORMATION);
             carregarHistorico(); // Recarrega histórico se necessário
