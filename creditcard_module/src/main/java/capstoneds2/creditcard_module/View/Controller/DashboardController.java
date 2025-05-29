@@ -318,16 +318,23 @@ public class DashboardController {
                 return;
             }
 
-            String senha = solicitarSenhaViaDialog();
-            if (senha == null || senha.isBlank()) {
-                mostrarAlerta("Cancelado", "Operação cancelada: senha não informada.", Alert.AlertType.INFORMATION);
-                return;
+            String senha;
+            while (true) {
+                senha = solicitarSenhaViaDialog();
+                if (senha == null) {
+                    mostrarAlerta("Cancelado", "Operação cancelada: senha não informada.", Alert.AlertType.INFORMATION);
+                    return;
+                }
+                if (senha.matches("^\\d{6}$")) {
+                    break;
+                }
+                mostrarAlerta("Senha inválida", "A senha deve conter exatamente 6 dígitos numéricos.", Alert.AlertType.ERROR);
             }
 
             CartaoRegister cartaoRegister = new CartaoRegister(
-                    true,              // aprovação automática
-                    true,              // eh adicional
-                    BandeiraCartao.visa, // pode permitir escolha depois
+                    true,                   // aprovação automática
+                    true,                   // é adicional
+                    BandeiraCartao.visa,    // bandeira
                     senha
             );
 
