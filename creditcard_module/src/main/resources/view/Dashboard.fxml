@@ -99,6 +99,7 @@
                         <children>
                            <Button fx:id="btnSolicitarCartao" prefWidth="140.0" styleClass="button-info" text="Solicitar Cartão" />
                            <Button fx:id="btnBloquearCartao" prefWidth="140.0" styleClass="button-info" text="Bloquear Cartão" />
+                           <Button fx:id="btnDesbloquearCartao" prefWidth="140.0" styleClass="button-info" text="Desbloquear Cartão" />
                            <Button fx:id="btnSegundaVia" prefWidth="140.0" styleClass="button-info" text="Gerar 2ª via" />
                            <Button fx:id="btnVisualizarFatura" prefWidth="140.0" styleClass="button-info" text="Visualizar Fatura" />
                            <Button fx:id="btnAumentarLimite" prefWidth="140.0" styleClass="button-info" text="Aumentar Limite" />

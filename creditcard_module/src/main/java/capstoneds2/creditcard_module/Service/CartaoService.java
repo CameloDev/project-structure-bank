@@ -77,46 +77,37 @@ public class CartaoService {
         return numero;
     }
 
-    // READ (por ID)
-    public Optional<Cartao> buscarCartaoPorId(Long id) {
-        return cartaoRepository.findById(id);
-    }
+    public Cartao gerarCartaoAdicional(CartaoRegister cartaoRegister, String nomeDependente, float limite) {
+        String numero = gerarNumeroCartaoUnico();
+        String cvv = String.format("%03d", new Random().nextInt(1000));
+        LocalDate dataValidade = LocalDate.now().plusYears(4);
+        LocalDate dataEmissao = LocalDate.now();
 
-    // READ (todos)
-    public List<Cartao> listarTodosCartoes() {
-        return cartaoRepository.findAll();
-    }
+        Cartao cartao = new Cartao();
+        cartao.setNumero(numero);
+        cartao.setCvv(cvv);
+        cartao.setData_validade(dataValidade);
+        cartao.setData_emissao(dataEmissao);
+        cartao.setLimite_total(limite);
+        cartao.setLimite_disponivel(limite);
+        cartao.setBandeiraCartao(cartaoRegister.bandeiraCartao());
+        cartao.setStatusCartao(StatusCartao.ativo);
+        cartao.setAprovacaoAutomatica(cartaoRegister.aprovacao_automatica());
+        cartao.setEhAdicional(true);
+        cartao.setSenha(cartaoRegister.Senha());
+        cartao.setNome_impresso(nomeDependente); // Nome do dependente
 
-    // UPDATE
-    public Optional<Cartao> atualizarCartao(Long id, Cartao novosDados) {
-        return cartaoRepository.findById(id).map(cartao -> {
-            cartao.atualizarCartao(novosDados);
-            historicoCartaoService.registrarHistorico(
-                    cartao,
-                    AcaoHistorico.alteracao_status,
-                    "Cartão atualizado com sucesso"
-            );
-            return cartaoRepository.save(cartao);
-        });
-    }
-// acho que nao vai precisar por enquanto
-    public boolean deletarCartaoPorId(Long id) {
-        Optional<Cartao> cartaoOptional = cartaoRepository.findById(id);
+        cartaoRepository.save(cartao);
 
-        if (cartaoOptional.isPresent()) {
-            Cartao cartao = cartaoOptional.get();
+        historicoCartaoService.registrarHistorico(
+                cartao,
+                AcaoHistorico.solicitacao,
+                "Cartão adicional gerado para dependente: " + nomeDependente
+        );
 
-            historicoCartaoService.registrarHistorico(
-                    cartao,
-                    AcaoHistorico.bloqueio,
-                    "Cartão cancelado e removido do sistema."
-            );
+        faturaService.criarFaturaParaCartao(cartao.getId());
 
-            cartaoRepository.deleteById(id);
-            return true;
-        }
-
-        return false;
+        return cartao;
     }
 
     private static final float LIMITE_MAXIMO = 10000f; // procurar um jeito de mudar isso aqui
@@ -168,16 +159,10 @@ public class CartaoService {
                         " para " + (modoAutomatico ? "AUTOMÁTICO" : "MANUAL")
         );
     }
-
     // BL-010
     @Transactional
     public List<Cartao> listarCartoesAtivos() { // cliente ID
         return cartaoRepository.findByStatusCartao(StatusCartao.ativo);
-    }
-
-    @Transactional
-    public List<Cartao> listarCartoesBloqueados() { // Cliente Id
-        return cartaoRepository.findByStatusCartao(StatusCartao.bloqueado);
     }
 
     public void bloquearCartao(Long cartaoId, String senha, String motivo) {
@@ -193,12 +178,7 @@ public class CartaoService {
 
         historicoCartaoService.registrarHistorico(cartao, AcaoHistorico.bloqueio, motivo);
     }
-/* Verificando
-    @Transactional()
-    public List<HistoricoCartao> consultarHistorico(Long cartaoId) {
-        return historicoCartaoRepository.findByCartao_IdOrderByDataAlteracaoDesc(cartaoId);
-    }
- */
+
     @Transactional
     public void desbloquearCartao(Long cartaoId, String senha, String motivo) {
         Cartao cartao = cartaoRepository.findById(cartaoId)

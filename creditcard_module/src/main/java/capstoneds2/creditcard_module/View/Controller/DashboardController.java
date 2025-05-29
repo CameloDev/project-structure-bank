@@ -36,7 +36,7 @@ import static capstoneds2.creditcard_module.View.Controller.DialogsUtils.*;
 public class DashboardController {
 
     @FXML
-    private Button btnSolicitarCartao, btnBloquearCartao, btnSegundaVia, btnVisualizarFatura, btnAumentarLimite, btnDetalhesCartao;
+    private Button btnSolicitarCartao, btnBloquearCartao, btnDesbloquearCartao, btnSegundaVia, btnVisualizarFatura, btnAumentarLimite, btnDetalhesCartao;
 
     @FXML
     private TableView<HistoricoCartao> tabelaTransacoes;
@@ -80,6 +80,13 @@ public class DashboardController {
             visualizarFatura();
 
         } );
+        btnAumentarLimite.setOnAction(event ->{
+            aumentarLimite();
+        });
+        btnSegundaVia.setOnAction(event ->{
+            solicitarCartaoAdicional();
+        });
+
 
         inicializarTabelaTransacoes();
         carregarHistorico();
@@ -91,10 +98,16 @@ public class DashboardController {
     private void solicitarCartao() {
         try {
             String senha = solicitarSenhaViaDialog();
+
+            if (senha == null || senha.isBlank()) {
+                mostrarAlerta("Operação cancelada", "A solicitação foi cancelada pelo usuário.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
             BandeiraCartao bandeira = BandeiraCartao.visa;
 
             CartaoRegister cartaoRegister = new CartaoRegister(
-                    true, // Add Dialog to Verify it
+                    true,
                     false,
                     bandeira,
                     senha
@@ -193,6 +206,60 @@ public class DashboardController {
             mostrarAlerta("Erro", "Erro ao abrir detalhes do cartão.", Alert.AlertType.ERROR);
         }
     }
+    private void solicitarCartaoAdicional() {
+        try {
+            TextInputDialog nomeDialog = new TextInputDialog();
+            nomeDialog.setTitle("Cartão Adicional");
+            nomeDialog.setHeaderText("Informe o nome do dependente:");
+            nomeDialog.setContentText("Nome:");
+            Optional<String> nomeOpt = nomeDialog.showAndWait();
+            if (nomeOpt.isEmpty() || nomeOpt.get().isBlank()) {
+                mostrarAlerta("Cancelado", "Operação cancelada: nome do dependente não informado.", Alert.AlertType.INFORMATION);
+                return;
+            }
+            String nomeDependente = nomeOpt.get();
+
+            TextInputDialog limiteDialog = new TextInputDialog("1000");
+            limiteDialog.setTitle("Cartão Adicional");
+            limiteDialog.setHeaderText("Informe o limite do dependente:");
+            limiteDialog.setContentText("Limite:");
+            Optional<String> limiteOpt = limiteDialog.showAndWait();
+            if (limiteOpt.isEmpty() || limiteOpt.get().isBlank()) {
+                mostrarAlerta("Cancelado", "Operação cancelada: limite não informado.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            float limite;
+            try {
+                limite = Float.parseFloat(limiteOpt.get());
+            } catch (NumberFormatException e) {
+                mostrarAlerta("Erro", "Limite inválido. Digite um número.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            String senha = solicitarSenhaViaDialog();
+            if (senha == null || senha.isBlank()) {
+                mostrarAlerta("Cancelado", "Operação cancelada: senha não informada.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            CartaoRegister cartaoRegister = new CartaoRegister(
+                    true,              // aprovação automática
+                    true,              // eh adicional
+                    BandeiraCartao.visa, // pode permitir escolha depois
+                    senha
+            );
+
+            Cartao cartao = cartaoService.gerarCartaoAdicional(cartaoRegister, nomeDependente, limite);
+
+            carregarHistorico();
+            mostrarAlerta("Cartão", "Cartão adicional gerado com sucesso!", Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Não foi possível gerar o cartão adicional.", Alert.AlertType.ERROR);
+        }
+    }
 
     // Visualizar Fatura
     public void visualizarFatura() {
@@ -233,6 +300,39 @@ public class DashboardController {
             mostrarAlerta("Erro", "Não foi possível calcular o total da fatura.", Alert.AlertType.ERROR);
         }
     }
+    public void aumentarLimite() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Ajustar Limite");
+        dialog.setHeaderText("Digite o novo limite para o cartão:");
+        dialog.setContentText("Novo limite:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(input -> {
+            try {
+                float novoLimite = Float.parseFloat(input);
+
+                String resposta = cartaoService.ajustarLimite(8L, novoLimite);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Resultado");
+                alert.setHeaderText(null);
+                alert.setContentText(resposta);
+                alert.showAndWait();
+
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Formato inválido");
+                alert.setContentText("Por favor, insira um número válido.");
+                alert.showAndWait();
+            }
+            carregarHistorico();
+        });
+    }
+
+
+
     // Tabela
     private void inicializarTabelaTransacoes() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
