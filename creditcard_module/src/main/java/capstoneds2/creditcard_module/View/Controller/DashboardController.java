@@ -138,10 +138,21 @@ public class DashboardController {
     // Bloquear Cartao
     private void bloquearCartao() {
         try {
-            String senha = solicitarEntradaViaDialog("Confirmação de senha", "Digite a senha do cartão:");
-            if (senha == null || senha.isBlank()) {
-                mostrarAlerta("Erro", "Senha não informada.", Alert.AlertType.WARNING);
-                return;
+            String senha;
+
+            while (true) {
+                senha = solicitarEntradaViaDialog("Confirmação de senha", "Digite a senha do cartão:");
+
+                if (senha == null) {
+                    mostrarAlerta("Operação cancelada", "A operação de bloqueio foi cancelada pelo usuário.", Alert.AlertType.INFORMATION);
+                    return;
+                }
+
+                if (senha.matches("^\\d{6}$")) {
+                    break;
+                }
+
+                mostrarAlerta("Senha inválida", "A senha deve conter exatamente 6 dígitos numéricos.", Alert.AlertType.ERROR);
             }
 
             String motivo = solicitarEntradaViaDialog("Motivo do bloqueio", "Informe o motivo do bloqueio:");
@@ -149,7 +160,8 @@ public class DashboardController {
                 mostrarAlerta("Erro", "Motivo do bloqueio não informado.", Alert.AlertType.WARNING);
                 return;
             }
-            cartaoService.bloquearCartao(10L, senha, motivo);
+
+            cartaoService.bloquearCartao(10L, senha, motivo); // Substitua 10L pelo ID real do cartão
             carregarHistorico();
             mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
         } catch (CustomException e) {
@@ -159,7 +171,7 @@ public class DashboardController {
             mostrarAlerta("Erro inesperado", "Ocorreu um erro ao bloquear o cartão.", Alert.AlertType.ERROR);
         }
     }
-    @FXML
+
     private void desbloquearCartao() {
         try {
             List<Cartao> cartoesBloqueados = cartaoService.listarCartoesBloqueados();
