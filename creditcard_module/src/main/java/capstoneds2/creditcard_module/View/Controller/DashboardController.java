@@ -101,16 +101,21 @@ public class DashboardController {
     // Solicitar Cartao
     private void solicitarCartao() {
         try {
-            String senha = solicitarSenhaViaDialog();
+            String senha;
 
-            if (senha == null) {
-                mostrarAlerta("Operação cancelada", "A solicitação foi cancelada pelo usuário.", Alert.AlertType.INFORMATION);
-                return;
-            }
+            while (true) {
+                senha = solicitarSenhaViaDialog();
 
-            if (!senha.matches("^\\d{6}$")) {
+                if (senha == null) {
+                    mostrarAlerta("Operação cancelada", "A solicitação foi cancelada pelo usuário.", Alert.AlertType.INFORMATION);
+                    return;
+                }
+
+                if (senha.matches("^\\d{6}$")) {
+                    break;
+                }
+
                 mostrarAlerta("Senha inválida", "A senha deve conter exatamente 6 dígitos numéricos.", Alert.AlertType.ERROR);
-                return;
             }
 
             BandeiraCartao bandeira = BandeiraCartao.visa;
