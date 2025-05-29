@@ -103,8 +103,13 @@ public class DashboardController {
         try {
             String senha = solicitarSenhaViaDialog();
 
-            if (senha == null || senha.isBlank()) {
+            if (senha == null) {
                 mostrarAlerta("Operação cancelada", "A solicitação foi cancelada pelo usuário.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            if (!senha.matches("^\\d{6}$")) {
+                mostrarAlerta("Senha inválida", "A senha deve conter exatamente 6 dígitos numéricos.", Alert.AlertType.ERROR);
                 return;
             }
 
