@@ -31,6 +31,6 @@ public class DialogsUtils {
         dialog.setHeaderText("Digite a senha do novo cartão");
         dialog.setContentText("Senha:");
         Optional<String> resultado = dialog.showAndWait();
-        return resultado.orElseThrow(() -> new RuntimeException("Senha não informada"));
+        return resultado.orElse(null);
     }
 }
