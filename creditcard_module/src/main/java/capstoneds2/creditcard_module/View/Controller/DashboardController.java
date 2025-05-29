@@ -138,20 +138,35 @@ public class DashboardController {
     // Bloquear Cartao
     private void bloquearCartao() {
         try {
-            String senha;
+            // Buscar cartões ativos para escolha
+            List<Cartao> cartoesAtivos = cartaoService.listarCartoesAtivos();
+            if (cartoesAtivos.isEmpty()) {
+                mostrarAlerta("Nenhum cartão ativo", "Você não possui cartões ativos para bloquear.", Alert.AlertType.INFORMATION);
+                return;
+            }
 
+            ChoiceDialog<Cartao> dialog = new ChoiceDialog<>(cartoesAtivos.get(0), cartoesAtivos);
+            dialog.setTitle("Bloquear Cartão");
+            dialog.setHeaderText("Selecione um cartão para bloquear:");
+            dialog.setContentText("Cartão:");
+            Optional<Cartao> resultado = dialog.showAndWait();
+            if (resultado.isEmpty()) {
+                return; // Usuário cancelou a seleção
+            }
+
+            Cartao selecionado = resultado.get();
+
+            // Validação da senha com loop e regex para 6 dígitos numéricos
+            String senha;
             while (true) {
                 senha = solicitarEntradaViaDialog("Confirmação de senha", "Digite a senha do cartão:");
-
                 if (senha == null) {
                     mostrarAlerta("Operação cancelada", "A operação de bloqueio foi cancelada pelo usuário.", Alert.AlertType.INFORMATION);
                     return;
                 }
-
                 if (senha.matches("^\\d{6}$")) {
                     break;
                 }
-
                 mostrarAlerta("Senha inválida", "A senha deve conter exatamente 6 dígitos numéricos.", Alert.AlertType.ERROR);
             }
 
@@ -161,9 +176,10 @@ public class DashboardController {
                 return;
             }
 
-            cartaoService.bloquearCartao(10L, senha, motivo); // Substitua 10L pelo ID real do cartão
+            cartaoService.bloquearCartao(selecionado.getId(), senha, motivo);
             carregarHistorico();
             mostrarAlerta("Cartão", "Cartão bloqueado com sucesso!", Alert.AlertType.INFORMATION);
+
         } catch (CustomException e) {
             mostrarAlerta("Erro", e.getMessage(), Alert.AlertType.ERROR);
         } catch (Exception e) {
