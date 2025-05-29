@@ -191,10 +191,17 @@ public class DashboardController {
 
             Cartao selecionado = resultado.get();
 
-            String senha = solicitarSenhaViaDialog();
-            if (senha == null || senha.isBlank()) {
-                mostrarAlerta("Cancelado", "Operação cancelada: senha não informada.", Alert.AlertType.INFORMATION);
-                return;
+            String senha;
+            while (true) {
+                senha = solicitarSenhaViaDialog();
+                if (senha == null) {
+                    mostrarAlerta("Cancelado", "Operação cancelada: senha não informada.", Alert.AlertType.INFORMATION);
+                    return;
+                }
+                if (senha.matches("^\\d{6}$")) {
+                    break;
+                }
+                mostrarAlerta("Senha inválida", "A senha deve conter exatamente 6 dígitos numéricos.", Alert.AlertType.ERROR);
             }
 
             TextInputDialog motivoDialog = new TextInputDialog();
@@ -211,7 +218,7 @@ public class DashboardController {
 
             cartaoService.desbloquearCartao(selecionado.getId(), senha, motivo);
             mostrarAlerta("Desbloqueado", "Cartão desbloqueado com sucesso!", Alert.AlertType.INFORMATION);
-            carregarHistorico(); // Recarrega histórico se necessário
+            carregarHistorico();
 
         } catch (CustomException ce) {
             mostrarAlerta("Erro", ce.getMessage(), Alert.AlertType.ERROR);
@@ -220,6 +227,7 @@ public class DashboardController {
             mostrarAlerta("Erro", "Ocorreu um erro ao tentar desbloquear o cartão.", Alert.AlertType.ERROR);
         }
     }
+
 
 
     // Listar Cartao
